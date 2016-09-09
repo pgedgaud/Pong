@@ -6,10 +6,6 @@
     <script type="text/javascript">
         var game = null;
         var canvas = null;
-        var canvasContext = null;
-        var framesPerSecond = 60;
-        var paddles = [];
-        var gameBall = null;
         
         window.onload = function() {
             canvas = document.getElementById("canvas");
@@ -21,15 +17,10 @@
                     game.reset();
                 }
                 game.drawObjects();
-            }, 1000 / framesPerSecond);
+            }, 1000 / game.framesPerSecond);
         };
         
         window.addEventListener("mousemove", onMouseMove, false);
-        
-        function initializeCanvas() {
-            canvasContext.fillStyle = "black";
-            canvasContext.fillRect(0, 0, canvas.width, canvas.height);
-        }
         
         function onMouseMove(evt) {
             var mousePosition = getMousePosition(canvas, evt);
@@ -44,68 +35,6 @@
                 y: evt.clientY - boundingRect.top - root.scrollTop
             };
         }
-        
-        function resetGame() {
-            gameBall.x = canvas.width / 2;
-            gameBall.y = canvas.height / 2;
-            gameBall.xVelocity = -gameBall.xVelocity;
-        }
-        
-        function drawGameObjects() {
-            canvasContext.clearRect(0, 0, canvas.width, canvas.height);
-            
-            initializeCanvas();
-            for (var i = 0; i < paddles.length; i++) {
-                canvasContext.fillStyle = paddles[i].backgroundColor;
-                canvasContext.fillRect(
-                    paddles[i].x,
-                    paddles[i].y,
-                    paddles[i].thickness,
-                    paddles[i].height
-                );
-            }
-            
-            canvasContext.beginPath();
-            canvasContext.arc(
-                gameBall.x,
-                gameBall.y,
-                gameBall.radius,
-                gameBall.endAngle,
-                Math.PI * 2,
-                true
-            );
-            canvasContext.fill();
-            canvasContext.closePath();
-        }
-        
-        function updateObjects() {
-            gameBall.x += gameBall.xVelocity;
-            gameBall.y += gameBall.yVelocity;
-            
-            if (gameBall.x < paddles[0].x + paddles[0].thickness) {
-                if (gameBall.y > paddles[0].y &&
-                    gameBall.y < (paddles[0].y + paddles[0].height)) {
-                    
-                    gameBall.xVelocity = -gameBall.xVelocity;
-                }
-                if (gameBall.x < canvas.clientLeft) {
-                    resetGame();
-                }
-            }
-            else if (gameBall.x >= paddles[1].x) {
-                gameBall.xVelocity = -(gameBall.xVelocity);
-            }
-            
-            if (gameBall.y > canvas.height || gameBall.y < 0) {
-                gameBall.yVelocity = -gameBall.yVelocity;
-            }
-            /* This is wrap-around code!
-            if (gameBall.x > canvas.width) {
-                gameBall.x -= gameBall.x;
-            }
-            */
-        }
-        
     </script>
 </head>
 <body>
