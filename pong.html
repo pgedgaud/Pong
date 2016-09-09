@@ -9,8 +9,10 @@
         
         window.onload = function() {
             canvas = document.getElementById("canvas");
+            canvas.addEventListener("mousemove", onMouseMove, false);
             game = new Game(canvas);
             game.initializeObjects();
+            
             setInterval(function() {
                 game.update();
                 if (game.isBallInGoal) {
@@ -20,7 +22,6 @@
             }, 1000 / game.framesPerSecond);
         };
         
-        window.addEventListener("mousemove", onMouseMove, false);
         
         function onMouseMove(evt) {
             var mousePosition = getMousePosition(canvas, evt);
