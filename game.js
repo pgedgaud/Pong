@@ -78,8 +78,8 @@ Game.prototype.drawObjects = function() {
         Math.PI * 2,
         true
     );
-    this.canvasContext.fill();
     this.canvasContext.closePath();
+    this.canvasContext.fill();
 };
 
 Game.prototype.update = function() {
@@ -90,6 +90,9 @@ Game.prototype.update = function() {
             this.gameBall.y < (this.paddles[0].y + this.paddles[0].height)) {
 
             this.gameBall.xVelocity = -this.gameBall.xVelocity;
+            var deltaY = this.gameBall.y - (this.paddles[0].y + this.paddles[0].height / 2);
+            console.log(deltaY);
+            this.gameBall.yVelocity = deltaY * 0.35;
             this.lastPaddleHit = 0;
         }
         if (this.gameBall.x < this.canvas.clientLeft) {
