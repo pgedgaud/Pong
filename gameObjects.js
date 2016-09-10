@@ -1,5 +1,5 @@
 // constants
-const STARTING_Y_VELOCITY = 5;
+const STARTING_Y_VELOCITY = 2;
 
 function GameObject() {
     this.x = 0;
@@ -27,6 +27,8 @@ Ball.prototype.updatePosition = function() {
 Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
     var lastPaddleHit = -1;
     var isBallInGoal = false;
+    var isWallHit = false;
+    
     if (this.x == paddles[0].x + paddles[0].thickness) {
         if (this.y > paddles[0].y &&
             this.y < (paddles[0].y + paddles[0].height)) {
@@ -52,6 +54,7 @@ Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
     if (this.y + this.radius > canvas.height ||
         this.y - this.radius < 0) {
         this.yVelocity = -this.yVelocity;
+        isWallHit = true;
     }
     
     if (this.x < canvas.clientLeft ||
@@ -62,7 +65,8 @@ Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
     
     return {
         isBallInGoal: isBallInGoal,
-        lastPaddleHit: lastPaddleHit
+        lastPaddleHit: lastPaddleHit,
+        isWallHit: isWallHit
     };
 };
 

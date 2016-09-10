@@ -10,6 +10,11 @@ var Game = function(canvas) {
         1: 0,
         2: 0
     };
+    this.sounds = {
+        ballHitsWall: new Audio("sounds/ball_hits_wall.wav"),
+        paddleOneHit: new Audio("sounds/paddle_one_hit.wav"),
+        paddleTwoHit: new Audio("sounds/paddle_two_hit.wav")
+    };
 };
 
 Game.prototype.initializeCanvas = function() {
@@ -53,7 +58,7 @@ Game.prototype.initializeObjects = function() {
     this.gameBall.radius = 5;
     this.gameBall.endAngle = 0;
     this.gameBall.xVelocity = 5;
-    this.gameBall.yVelocity = 5;
+    this.gameBall.yVelocity = STARTING_Y_VELOCITY;
 };
 
 Game.prototype.reset = function() {
@@ -100,7 +105,18 @@ Game.prototype.update = function() {
     this.isBallInGoal = collisionInfo.isBallInGoal;
     if (collisionInfo.lastPaddleHit != -1) {
         this.lastPaddleHit = collisionInfo.lastPaddleHit;
+        if (this.lastPaddleHit == 1) {
+            this.sounds.paddleOneHit.play();
+        }
+        else {
+            this.sounds.paddleTwoHit.play();
+        }
     }
+    
+    if (collisionInfo.isWallHit) {
+        this.sounds.ballHitsWall.play();
+    }
+    
     if (collisionInfo.isBallInGoal) {
         this.score[this.lastPaddleHit]++;
     }
