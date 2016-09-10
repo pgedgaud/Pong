@@ -49,7 +49,8 @@ Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
         }
     }
 
-    if (this.y > canvas.height || this.y < 0) {
+    if (this.y + this.radius > canvas.height ||
+        this.y - this.radius < 0) {
         this.yVelocity = -this.yVelocity;
     }
     

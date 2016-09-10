@@ -18,7 +18,11 @@ Game.prototype.initializeCanvas = function() {
 };
 
 Game.prototype.onMouseMoved = function(y) {
-    this.paddles[0].y = y - (this.paddles[0].height / 2);
+    if (this.paddles[0].y != this.canvas.clientTop &&
+        this.paddles[0].height != this.canvas.clientHeight) {
+        
+        this.paddles[0].y = y - (this.paddles[0].height / 2);
+    }
 };
 
 Game.prototype.initializeObjects = function() {
