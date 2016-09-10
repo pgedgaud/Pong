@@ -20,6 +20,7 @@ var Game = function(canvas) {
 Game.prototype.initializeCanvas = function() {
     this.canvasContext.fillStyle = "black";
     this.canvasContext.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.canvasContext.font = "40px Courier New";
 };
 
 Game.prototype.onMouseMoved = function(y) {
@@ -95,6 +96,16 @@ Game.prototype.drawObjects = function() {
     );
     this.canvasContext.closePath();
     this.canvasContext.fill();
+    
+    this.drawScoreInformation();
+};
+
+Game.prototype.drawScoreInformation = function() {
+    var canvasMiddleX = this.canvas.clientWidth / 2;
+    var playerOneScoreX = canvasMiddleX - 50;
+    var playerTwoScoreX = canvasMiddleX + 50;
+    this.canvasContext.fillText(this.score[1], playerOneScoreX, 50);
+    this.canvasContext.fillText(this.score[2], playerTwoScoreX, 50);
 };
 
 Game.prototype.update = function() {
