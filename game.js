@@ -140,8 +140,8 @@ Game.prototype.update = function() {
     }
     
     if (collisionInfo.isBallInGoal) {
-        this.score[this.lastPaddleHit]++;
-        if (this.score[this.lastPaddleHit] == this.maxGoals) {
+        this.score[collisionInfo.playerScored]++;
+        if (this.score[collisionInfo.playerScored] == this.maxGoals) {
             this.endGame();
         }
     }

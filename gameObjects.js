@@ -50,8 +50,9 @@ Ball.prototype.updatePosition = function() {
 };
 
 Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
-    var lastPaddleHit = -1;
     var isBallInGoal = false;
+    var playerScored = -1;
+    var lastPaddleHit = -1;
     var isWallHit = false;
     
     if (this.x == paddles[0].x + paddles[0].thickness) {
@@ -88,9 +89,19 @@ Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
         isBallInGoal = true;
     }
     
+    if (this.x < canvas.clientLeft) {
+        isBallInGoal = true;
+        playerScored = 2;
+    }
+    if (this.x > canvas.clientWidth) {
+        isBallInGoal = true;
+        playerScored = 1;
+    }
+    
     return {
-        isBallInGoal: isBallInGoal,
         lastPaddleHit: lastPaddleHit,
+        isBallInGoal: isBallInGoal,
+        playerScored: playerScored,
         isWallHit: isWallHit
     };
 };
