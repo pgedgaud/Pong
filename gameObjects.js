@@ -30,7 +30,7 @@ Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
     if (this.x == paddles[0].x + paddles[0].thickness) {
         if (this.y > paddles[0].y &&
             this.y < (paddles[0].y + paddles[0].height)) {
-
+            
             this.xVelocity = -this.xVelocity;
             
             var deltaY = this.y - (paddles[0].y + paddles[0].height / 2);

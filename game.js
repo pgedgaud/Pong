@@ -112,13 +112,20 @@ Game.prototype.update = function() {
 };
 
 Game.prototype.calculateAi = function(gameBall) {
-    if (this.paddles[1].getCenter() > gameBall.y &&
-        this.paddles[1].y > 0) {
+    var distanceFromCenter = Math.abs(this.paddles[1].getCenter() - gameBall.y);
+    var aiPaddleNoise = 8;
+    var aiYCoord = this.paddles[1].y;
+    var paddleCenter = Math.abs(this.paddles[1].getCenter());
+    
+    if (paddleCenter > gameBall.y &&
+        aiYCoord > 0 &&
+        distanceFromCenter > aiPaddleNoise) {
         
         this.paddles[1].y -= 4;
     }
-    else if (this.paddles[1].getCenter() < gameBall.y &&
-             this.paddles[1].y < this.canvas.clientHeight){
+    else if (paddleCenter < gameBall.y &&
+             aiYCoord < this.canvas.clientHeight &&
+             distanceFromCenter > aiPaddleNoise){
         
         this.paddles[1].y += 4;
     }
