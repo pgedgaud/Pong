@@ -1,6 +1,31 @@
 // constants
 const STARTING_Y_VELOCITY = 2;
 
+function GameSettings() {
+    this.maxGoals = 0;
+    this.difficultySetting = "";
+    this.difficulty = {
+        easy: {
+            label: "Easy",
+            ballXVelocity: 5,
+            ballYVelocity: 3,
+            aiPaddleSpeed: 4
+        },
+        medium: {
+            label: "Medium",
+            ballXVelocity: 5.5,
+            ballYVelocity: 3.5,
+            aiPaddleSpeed: 6
+        },
+        hard: {
+            label: "Hard",
+            ballXVelocity: 5.75,
+            ballYVelocity: 3.75,
+            aiPaddleSpeed: 8
+        }
+    }
+}
+
 function GameObject() {
     this.x = 0;
     this.y = 0;
@@ -78,3 +103,4 @@ Paddle.prototype.constructor = GameObject;
 Paddle.prototype.getCenter = function() {
     return this.y + (this.height / 2);
 };
+

@@ -1,4 +1,5 @@
-var Game = function(canvas) {
+var Game = function(canvas, settings) {
+    this.gameSettings = new GameSettings();
     this.canvas = canvas;
     this.canvasContext = canvas.getContext("2d");
     this.framesPerSecond = 60;
@@ -15,6 +16,8 @@ var Game = function(canvas) {
         paddleOneHit: new Audio("sounds/paddle_one_hit.wav"),
         paddleTwoHit: new Audio("sounds/paddle_two_hit.wav")
     };
+    this.difficulty = this.gameSettings.difficulty[settings.difficultySetting];
+    this.maxGoals = settings.maxGoals;
 };
 
 Game.prototype.initializeCanvas = function() {
@@ -58,18 +61,26 @@ Game.prototype.initializeObjects = function() {
     this.gameBall.backgroundColor = "white";
     this.gameBall.radius = 5;
     this.gameBall.endAngle = 0;
-    this.gameBall.xVelocity = 5;
-    this.gameBall.yVelocity = STARTING_Y_VELOCITY;
+    this.gameBall.xVelocity = this.difficulty.ballXVelocity;
+    this.gameBall.yVelocity = this.difficulty.ballYVelocity;
 };
 
 Game.prototype.reset = function() {
     this.gameBall.x = this.canvas.width / 2;
     this.gameBall.y = this.canvas.height / 2;
     this.gameBall.xVelocity = -this.gameBall.xVelocity;
-    this.gameBall.yVelocity = STARTING_Y_VELOCITY;
+    this.gameBall.yVelocity = this.difficulty.ballYVelocity;
     this.isBallInGoal = false;
     this.lastPaddleHit = -1;
 };
+
+Game.prototype.endGame = function() {
+    this.reset();
+    this.score = {
+        1: 0,
+        2: 0
+    };
+}
 
 Game.prototype.drawObjects = function() {
     this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -130,6 +141,9 @@ Game.prototype.update = function() {
     
     if (collisionInfo.isBallInGoal) {
         this.score[this.lastPaddleHit]++;
+        if (this.score[this.lastPaddleHit] == this.maxGoals) {
+            this.endGame();
+        }
     }
     /* This is wrap-around code!
     if (gameBall.x > canvas.width) {
@@ -148,12 +162,12 @@ Game.prototype.calculateAi = function(gameBall) {
         aiYCoord > 0 &&
         distanceFromCenter > aiPaddleNoise) {
         
-        this.paddles[1].y -= 4;
+        this.paddles[1].y -= this.difficulty.aiPaddleSpeed;
     }
     else if (paddleCenter < gameBall.y &&
              aiYCoord < this.canvas.clientHeight &&
              distanceFromCenter > aiPaddleNoise){
         
-        this.paddles[1].y += 4;
+        this.paddles[1].y += this.difficulty.aiPaddleSpeed;
     }
 };
