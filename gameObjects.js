@@ -1,5 +1,6 @@
 // constants
 const STARTING_Y_VELOCITY = 2;
+const STARTING_X_VELOCITY = 5;
 
 function GameSettings() {
     this.maxGoals = 0;
@@ -7,20 +8,14 @@ function GameSettings() {
     this.difficulty = {
         easy: {
             label: "Easy",
-            ballXVelocity: 5,
-            ballYVelocity: 3,
             aiPaddleSpeed: 4
         },
         medium: {
             label: "Medium",
-            ballXVelocity: 5.5,
-            ballYVelocity: 3.5,
             aiPaddleSpeed: 6
         },
         hard: {
             label: "Hard",
-            ballXVelocity: 5.75,
-            ballYVelocity: 3.75,
             aiPaddleSpeed: 8
         }
     }
@@ -113,5 +108,13 @@ Paddle.prototype.constructor = GameObject;
 
 Paddle.prototype.getCenter = function() {
     return this.y + (this.height / 2);
+};
+
+Paddle.prototype.moveUp = function(pixels) {
+    this.y = pixels;
+};
+
+Paddle.prototype.moveDown = function(pixels) {
+    this.y = pixels;
 };
 

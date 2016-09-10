@@ -27,10 +27,16 @@ Game.prototype.initializeCanvas = function() {
 };
 
 Game.prototype.onMouseMoved = function(y) {
+    if (y > this.paddles[0].height / 2) {
+        this.paddles[0].moveDown(y);
+    }
+    else {
+        this.paddles[0].moveUp(y);
+    }
     if (this.paddles[0].y != this.canvas.clientTop &&
         this.paddles[0].height != this.canvas.clientHeight) {
         
-        this.paddles[0].y = y - (this.paddles[0].height / 2);
+        // this.paddles[0].y = y - (this.paddles[0].height / 2);
     }
 };
 
@@ -61,15 +67,15 @@ Game.prototype.initializeObjects = function() {
     this.gameBall.backgroundColor = "white";
     this.gameBall.radius = 5;
     this.gameBall.endAngle = 0;
-    this.gameBall.xVelocity = this.difficulty.ballXVelocity;
-    this.gameBall.yVelocity = this.difficulty.ballYVelocity;
+    this.gameBall.xVelocity = STARTING_X_VELOCITY;
+    this.gameBall.yVelocity = STARTING_Y_VELOCITY;
 };
 
 Game.prototype.reset = function() {
     this.gameBall.x = this.canvas.width / 2;
     this.gameBall.y = this.canvas.height / 2;
     this.gameBall.xVelocity = -this.gameBall.xVelocity;
-    this.gameBall.yVelocity = this.difficulty.ballYVelocity;
+    this.gameBall.yVelocity = STARTING_Y_VELOCITY;
     this.isBallInGoal = false;
     this.lastPaddleHit = -1;
 };
