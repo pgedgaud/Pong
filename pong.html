@@ -19,6 +19,7 @@
                     game.reset();
                 }
                 game.drawObjects();
+                updateScoreLabels(game.score);
             }, 1000 / game.framesPerSecond);
         };
         
@@ -36,9 +37,16 @@
                 y: evt.clientY - boundingRect.top - root.scrollTop
             };
         }
+        
+        function updateScoreLabels(score) {
+            document.getElementById("playerOneScore").innerText = score[1];
+            document.getElementById("playerTwoScore").innerText = score[2];
+        }
     </script>
 </head>
 <body>
+    <label>Player One: <label id="playerOneScore"></label></label>
+    <label>Player Two: <label id="playerTwoScore"></label></label>
     <canvas id="canvas" width="800" height="600" style="cursor: none"></canvas>
 </body>
 </html>

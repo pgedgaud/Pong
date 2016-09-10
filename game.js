@@ -6,6 +6,10 @@ var Game = function(canvas) {
     this.gameBall = null;
     this.isBallInGoal = false;
     this.lastPaddleHit = -1;
+    this.score = {
+        1: 0,
+        2: 0
+    };
 };
 
 Game.prototype.initializeCanvas = function() {
@@ -52,7 +56,9 @@ Game.prototype.reset = function() {
     this.gameBall.x = this.canvas.width / 2;
     this.gameBall.y = this.canvas.height / 2;
     this.gameBall.xVelocity = -this.gameBall.xVelocity;
+    this.gameBall.yVelocity = STARTING_Y_VELOCITY;
     this.isBallInGoal = false;
+    this.lastPaddleHit = -1;
 };
 
 Game.prototype.drawObjects = function() {
@@ -83,34 +89,33 @@ Game.prototype.drawObjects = function() {
 };
 
 Game.prototype.update = function() {
-    this.gameBall.update();
+    this.gameBall.updatePosition();
+    this.calculateAi(this.gameBall);
+    var collisionInfo = this.gameBall.checkCollisionsWith(this.paddles, this.canvas);
     
-    if (this.gameBall.x < this.paddles[0].x + this.paddles[0].thickness) {
-        if (this.gameBall.y > this.paddles[0].y &&
-            this.gameBall.y < (this.paddles[0].y + this.paddles[0].height)) {
-
-            this.gameBall.xVelocity = -this.gameBall.xVelocity;
-            var deltaY = this.gameBall.y - (this.paddles[0].y + this.paddles[0].height / 2);
-            console.log(deltaY);
-            this.gameBall.yVelocity = deltaY * 0.35;
-            this.lastPaddleHit = 0;
-        }
-        if (this.gameBall.x < this.canvas.clientLeft) {
-            this.isBallInGoal = true;
-        }
+    this.isBallInGoal = collisionInfo.isBallInGoal;
+    if (collisionInfo.lastPaddleHit != -1) {
+        this.lastPaddleHit = collisionInfo.lastPaddleHit;
     }
-    else if (this.gameBall.x >= this.paddles[1].x) {
-        this.lastPaddleHit = 1;
-        this.gameBall.xVelocity = -(this.gameBall.xVelocity);
+    if (collisionInfo.isBallInGoal) {
+        this.score[this.lastPaddleHit]++;
     }
-
-    if (this.gameBall.y > this.canvas.height || this.gameBall.y < 0) {
-        this.gameBall.yVelocity = -this.gameBall.yVelocity;
-    }
-    console.log(this.lastPaddleHit);
     /* This is wrap-around code!
     if (gameBall.x > canvas.width) {
         gameBall.x -= gameBall.x;
     }
     */
+};
+
+Game.prototype.calculateAi = function(gameBall) {
+    if (this.paddles[1].getCenter() > gameBall.y &&
+        this.paddles[1].y > 0) {
+        
+        this.paddles[1].y -= 4;
+    }
+    else if (this.paddles[1].getCenter() < gameBall.y &&
+             this.paddles[1].y < this.canvas.clientHeight){
+        
+        this.paddles[1].y += 4;
+    }
 };
