@@ -11,7 +11,7 @@
             canvas = document.getElementById("canvas");
             canvas.addEventListener("mousemove", onMouseMove, false);
             var gameSettings = new GameSettings();
-            gameSettings.maxGoals = 2;
+            gameSettings.maxGoals = 10;
             gameSettings.difficultySetting = "easy";
             game = new Game(canvas, gameSettings);
             game.initializeObjects();
