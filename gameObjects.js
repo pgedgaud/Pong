@@ -119,7 +119,7 @@ Paddle.prototype.moveDown = function(pixels) {
 };
 
 Paddle.prototype.moveTo = function(y) {
-    this.y = y;
+    this.y = y - this.height / 2;
 }
 
 Paddle.prototype.getTop = function() {

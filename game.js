@@ -28,9 +28,20 @@ Game.prototype.initializeCanvas = function() {
 };
 
 //TODO(Logan): Don't allow the paddle to clip through the top and bottom
-//TODO(Logan): Make sure the middle of the paddle cooresponds with the mouse pointer
 Game.prototype.onMouseMoved = function(y) {
-    this.paddles[0].moveTo(y);
+    if (y > this.paddles[0].getCenter() &&
+        this.paddles[0].getBottom() <= this.canvas.clientHeight) {
+        
+        this.paddles[0].moveTo(y);
+        return;
+    }
+    if (y < this.paddles[0].getTop() &&
+             this.paddles[0].getTop() >= this.canvas.clientTop) {
+        
+        this.paddles[0].moveTo(y);
+        return;
+    }
+    // this.paddles[0].moveTo(y);
 };
 
 Game.prototype.initializeObjects = function() {
