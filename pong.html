@@ -2,17 +2,18 @@
 <html>
 <head>
     <script src="gameObjects.js" type="text/javascript"></script>
+    <script src="input.js" type="text/javascript"></script>
     <script src="game.js" type="text/javascript"></script>
     <script type="text/javascript">
         var game = null;
-        var canvas = null;
         
         window.onload = function() {
-            canvas = document.getElementById("canvas");
+            var canvas = document.getElementById("canvas");
             canvas.addEventListener("mousemove", onMouseMove, false);
+            document.addEventListener("keydown", onKeyDown, false);
             var gameSettings = new GameSettings();
             gameSettings.maxGoals = 10;
-            gameSettings.difficultySetting = "hard";
+            gameSettings.difficultySetting = "medium";
             game = new Game(canvas, gameSettings);
             game.initializeObjects();
             
@@ -25,8 +26,12 @@
             }, 1000 / game.framesPerSecond);
         };
         
+        function onKeyDown(evt) {
+            game.onKeyPressed(evt.keyCode);
+        }
         
         function onMouseMove(evt) {
+            var canvas = document.getElementById("canvas");
             var mousePosition = getMousePosition(canvas, evt);
             game.onMouseMoved(mousePosition.y);
         }

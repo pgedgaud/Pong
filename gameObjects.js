@@ -12,7 +12,7 @@ function GameSettings() {
         },
         medium: {
             label: "Medium",
-            aiPaddleSpeed: 6
+            aiPaddleSpeed: 6.5
         },
         hard: {
             label: "Hard",
@@ -111,10 +111,21 @@ Paddle.prototype.getCenter = function() {
 };
 
 Paddle.prototype.moveUp = function(pixels) {
-    this.y = pixels;
+    this.y -= pixels;
 };
 
 Paddle.prototype.moveDown = function(pixels) {
-    this.y = pixels;
+    this.y += pixels;
 };
 
+Paddle.prototype.moveTo = function(y) {
+    this.y = y;
+}
+
+Paddle.prototype.getTop = function() {
+    return this.y;
+}
+
+Paddle.prototype.getBottom = function() {
+    return this.y + this.height;
+}

@@ -27,18 +27,10 @@ Game.prototype.initializeCanvas = function() {
     this.canvasContext.font = "40px Courier New";
 };
 
+//TODO(Logan): Don't allow the paddle to clip through the top and bottom
+//TODO(Logan): Make sure the middle of the paddle cooresponds with the mouse pointer
 Game.prototype.onMouseMoved = function(y) {
-    if (y > this.paddles[0].height / 2) {
-        this.paddles[0].moveDown(y);
-    }
-    else {
-        this.paddles[0].moveUp(y);
-    }
-    if (this.paddles[0].y != this.canvas.clientTop &&
-        this.paddles[0].height != this.canvas.clientHeight) {
-        
-        // this.paddles[0].y = y - (this.paddles[0].height / 2);
-    }
+    this.paddles[0].moveTo(y);
 };
 
 Game.prototype.initializeObjects = function() {
@@ -70,6 +62,19 @@ Game.prototype.initializeObjects = function() {
     this.gameBall.endAngle = 0;
     this.gameBall.xVelocity = STARTING_X_VELOCITY;
     this.gameBall.yVelocity = STARTING_Y_VELOCITY;
+};
+
+Game.prototype.onKeyPressed = function(keyCode) {
+    switch (keyCode) {
+        case 38:
+            // Move player 1 up
+            this.paddles[0].moveUp(10);
+            break;
+        case 40:
+            // Move player 1 down
+            this.paddles[0].moveDown(10);
+            break;
+    }
 };
 
 Game.prototype.reset = function() {
