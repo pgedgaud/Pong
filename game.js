@@ -6,6 +6,7 @@ var Game = function(canvas, settings) {
     this.paddles = [];
     this.gameBall = null;
     this.isBallInGoal = false;
+    this.hasPlayerWon = false;
     this.lastPaddleHit = -1;
     this.score = {
         1: 0,
@@ -123,6 +124,10 @@ Game.prototype.drawScoreInformation = function() {
     var playerTwoScoreX = canvasMiddleX + 50;
     this.canvasContext.fillText(this.score[1], playerOneScoreX, 50);
     this.canvasContext.fillText(this.score[2], playerTwoScoreX, 50);
+};
+
+Game.prototype.drawPlayerWonScreen = function() {
+    
 };
 
 Game.prototype.update = function() {

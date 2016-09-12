@@ -16,7 +16,7 @@ function GameSettings() {
         },
         hard: {
             label: "Hard",
-            aiPaddleSpeed: 8
+            aiPaddleSpeed: 10
         }
     }
 }
