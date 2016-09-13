@@ -2,6 +2,7 @@ var Game = function(canvas, settings) {
     this.gameSettings = new GameSettings();
     this.canvas = canvas;
     this.canvasContext = canvas.getContext("2d");
+    this.input = new Input(InputTypes.keyboard);
     this.framesPerSecond = 60;
     this.paddles = [];
     this.gameBall = null;
@@ -146,6 +147,14 @@ Game.prototype.drawPlayerWonScreen = function() {
 };
 
 Game.prototype.update = function() {
+    if (this.input.keyCodes[this.input.keyCodes.up] &&
+        this.paddles[0].getTop() > this.canvas.clientTop) {
+        this.paddles[0].moveUp(6);
+    }
+    if (this.input.keyCodes[this.input.keyCodes.down] &&
+        this.paddles[0].getBottom() < this.canvas.clientHeight) {
+        this.paddles[0].moveDown(6);
+    }
     this.gameBall.updatePosition();
     this.calculateAi(this.gameBall);
     var collisionInfo = this.gameBall.checkCollisionsWith(this.paddles, this.canvas);
@@ -181,17 +190,18 @@ Game.prototype.update = function() {
 Game.prototype.calculateAi = function(gameBall) {
     var distanceFromCenter = Math.abs(this.paddles[1].getCenter() - gameBall.y);
     var aiPaddleNoise = 8;
-    var aiYCoord = this.paddles[1].y;
+    var paddleTop = this.paddles[1].getTop();
+    var paddleBottom = this.paddles[1].getBottom();
     var paddleCenter = Math.abs(this.paddles[1].getCenter());
     
     if (paddleCenter > gameBall.y &&
-        aiYCoord > 0 &&
+        paddleTop > this.canvas.clientTop &&
         distanceFromCenter > aiPaddleNoise) {
         
         this.paddles[1].y -= this.difficulty.aiPaddleSpeed;
     }
     else if (paddleCenter < gameBall.y &&
-             aiYCoord < this.canvas.clientHeight &&
+             paddleBottom < this.canvas.clientHeight &&
              distanceFromCenter > aiPaddleNoise){
         
         this.paddles[1].y += this.difficulty.aiPaddleSpeed;

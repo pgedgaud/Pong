@@ -10,7 +10,6 @@
         window.onload = function() {
             var canvas = document.getElementById("canvas");
             canvas.addEventListener("mousemove", onMouseMove, false);
-            document.addEventListener("keydown", onKeyDown, false);
             var gameSettings = new GameSettings();
             gameSettings.maxGoals = 10;
             gameSettings.difficultySetting = "medium";
@@ -25,10 +24,6 @@
                 game.drawObjects();
             }, 1000 / game.framesPerSecond);
         };
-        
-        function onKeyDown(evt) {
-            game.onKeyPressed(evt.keyCode);
-        }
         
         function onMouseMove(evt) {
             var canvas = document.getElementById("canvas");
