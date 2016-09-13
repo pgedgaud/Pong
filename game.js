@@ -27,21 +27,17 @@ Game.prototype.initializeCanvas = function() {
     this.canvasContext.font = "40px Courier New";
 };
 
-//TODO(Logan): Don't allow the paddle to clip through the top and bottom
 Game.prototype.onMouseMoved = function(y) {
     if (y > this.paddles[0].getCenter() &&
         this.paddles[0].getBottom() <= this.canvas.clientHeight) {
         
         this.paddles[0].moveTo(y);
-        return;
     }
-    if (y < this.paddles[0].getTop() &&
+    else if (y < this.paddles[0].getCenter() &&
              this.paddles[0].getTop() >= this.canvas.clientTop) {
         
         this.paddles[0].moveTo(y);
-        return;
     }
-    // this.paddles[0].moveTo(y);
 };
 
 Game.prototype.initializeObjects = function() {
