@@ -147,14 +147,15 @@ Game.prototype.drawPlayerWonScreen = function() {
 };
 
 Game.prototype.update = function() {
-    if (this.input.keyCodes[this.input.keyCodes.up] &&
+    if (this.input.keysPressed[KeyCodes.up] &&
         this.paddles[0].getTop() > this.canvas.clientTop) {
         this.paddles[0].moveUp(6);
     }
-    if (this.input.keyCodes[this.input.keyCodes.down] &&
+    if (this.input.keysPressed[KeyCodes.down] &&
         this.paddles[0].getBottom() < this.canvas.clientHeight) {
         this.paddles[0].moveDown(6);
     }
+    
     this.gameBall.updatePosition();
     this.calculateAi(this.gameBall);
     var collisionInfo = this.gameBall.checkCollisionsWith(this.paddles, this.canvas);
