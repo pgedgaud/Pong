@@ -71,6 +71,9 @@ Game.prototype.initializeObjects = function() {
     this.gameBall.yVelocity = STARTING_Y_VELOCITY;
 };
 
+// TODO(Logan): Smooth out the keyboard movement.
+// Look at Stack Overflow article:
+// http://stackoverflow.com/questions/29118791/how-to-move-an-element-via-arrow-keys-continuously-smoothly
 Game.prototype.onKeyPressed = function(keyCode) {
     switch (keyCode) {
         case 38:
