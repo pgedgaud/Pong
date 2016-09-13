@@ -5,12 +5,14 @@
     <script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
     
     <script src="gameObjects.js" type="text/javascript"></script>
+    <script src="gameLoop.js" type="text/javascript"></script>
     <script src="input.js" type="text/javascript"></script>
     <script src="game.js" type="text/javascript"></script>
     <script type="text/javascript">
         var game = null;
         
         window.onload = function() {
+            var gameLoop = new GameLoop();
             var canvas = document.getElementById("canvas");
             var gameSettings = new GameSettings();
             gameSettings.maxGoals = 10;
@@ -18,14 +20,13 @@
             game = new Game(canvas, gameSettings);
             game.initializeObjects();
             
-            // TODO(Logan):  Create a better Game Loop
-            setInterval(function() {
+            gameLoop.onEachIteration(function() {
                 game.update();
                 if (game.isBallInGoal) {
                     game.reset();
                 }
                 game.drawObjects();
-            }, 1000 / game.framesPerSecond);
+            });
         };
     </script>
     <style>
