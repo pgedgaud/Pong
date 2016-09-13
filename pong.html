@@ -18,6 +18,7 @@
             game = new Game(canvas, gameSettings);
             game.initializeObjects();
             
+            // TODO(Logan):  Create a better Game Loop
             setInterval(function() {
                 game.update();
                 if (game.isBallInGoal) {
