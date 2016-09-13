@@ -72,22 +72,6 @@ Game.prototype.initializeObjects = function() {
     this.gameBall.yVelocity = STARTING_Y_VELOCITY;
 };
 
-// TODO(Logan): Smooth out the keyboard movement.
-// Look at Stack Overflow article:
-// http://stackoverflow.com/questions/29118791/how-to-move-an-element-via-arrow-keys-continuously-smoothly
-Game.prototype.onKeyPressed = function(keyCode) {
-    switch (keyCode) {
-        case 38:
-            // Move player 1 up
-            this.paddles[0].moveUp(10);
-            break;
-        case 40:
-            // Move player 1 down
-            this.paddles[0].moveDown(10);
-            break;
-    }
-};
-
 Game.prototype.reset = function() {
     this.gameBall.x = this.canvas.width / 2;
     this.gameBall.y = this.canvas.height / 2;
@@ -142,25 +126,34 @@ Game.prototype.drawScoreInformation = function() {
     this.canvasContext.fillText(this.score[2], playerTwoScoreX, 50);
 };
 
+Game.prototype.processInput = function() {
+    if (this.gameSettings.players == 2) {
+        if (this.input.keysPressed[KeyCodes.up] &&
+            this.paddles[1].getTop() > this.canvas.clientTop) {
+            this.paddles[1].moveUp(6);
+        }
+        if (this.input.keysPressed[KeyCodes.down] &&
+            this.paddles[1].getBottom() < this.canvas.clientHeight) {
+            this.paddles[1].moveDown(6);
+        }
+    }
+    
+    if (this.input.keysPressed[KeyCodes.w] &&
+        this.paddles[0].getTop() > this.canvas.clientTop) {
+        
+        this.paddles[0].moveUp(6);
+    }
+    if (this.input.keysPressed[KeyCodes.s] &&
+        this.paddles[0].getBottom() < this.canvas.clientHeight) {
+        this.paddles[0].moveDown(6);
+    }
+};
+
 Game.prototype.drawPlayerWonScreen = function() {
     
 };
 
-Game.prototype.update = function() {
-    if (this.input.keysPressed[KeyCodes.up] &&
-        this.paddles[0].getTop() > this.canvas.clientTop) {
-        this.paddles[0].moveUp(6);
-    }
-    if (this.input.keysPressed[KeyCodes.down] &&
-        this.paddles[0].getBottom() < this.canvas.clientHeight) {
-        this.paddles[0].moveDown(6);
-    }
-    
-    this.gameBall.updatePosition();
-    this.calculateAi(this.gameBall);
-    var collisionInfo = this.gameBall.checkCollisionsWith(this.paddles, this.canvas);
-    
-    this.isBallInGoal = collisionInfo.isBallInGoal;
+Game.prototype.playSounds = function(collisionInfo) {
     if (collisionInfo.lastPaddleHit != -1) {
         this.lastPaddleHit = collisionInfo.lastPaddleHit;
         if (this.lastPaddleHit == 1) {
@@ -174,7 +167,19 @@ Game.prototype.update = function() {
     if (collisionInfo.isWallHit) {
         this.sounds.ballHitsWall.play();
     }
+};
+
+Game.prototype.update = function() {
+    this.processInput();
+    this.gameBall.updatePosition();
     
+    if (this.gameSettings.players == 1) {
+        this.calculateAi(this.gameBall);
+    }
+    var collisionInfo = this.gameBall.checkCollisionsWith(this.paddles, this.canvas);
+    
+    this.playSounds(collisionInfo);
+    this.isBallInGoal = collisionInfo.isBallInGoal;
     if (collisionInfo.isBallInGoal) {
         this.score[collisionInfo.playerScored]++;
         if (this.score[collisionInfo.playerScored] == this.maxGoals) {

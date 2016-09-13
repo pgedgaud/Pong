@@ -4,6 +4,7 @@ const STARTING_X_VELOCITY = 5;
 
 function GameSettings() {
     this.maxGoals = 0;
+    this.players = 1;
     this.difficultySetting = "";
     this.difficulty = {
         easy: {
