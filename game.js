@@ -1,8 +1,4 @@
 var Game = function(canvas, settings) {
-    this.sound = new Howl({
-        src: ['sounds/ball_hits_wall.wav', 'sounds/paddle_one_hit', 'sounds/paddle_two_hit.wav'],
-        
-    });
     this.gameSettings = new GameSettings();
     this.canvas = canvas;
     this.canvasContext = canvas.getContext("2d");
@@ -54,29 +50,30 @@ Game.prototype.onMouseMoved = function(y) {
 Game.prototype.initializeObjects = function() {
     var firstPaddle = new Paddle();
     firstPaddle.x = 75;
-    firstPaddle.thickness = 5;
-    firstPaddle.height = 75;
+    firstPaddle.setWidth(5);
+    firstPaddle.setHeight(75);
     firstPaddle.backgroundColor = "white";
 
     this.paddles.push(firstPaddle);
 
     var secondPaddle = new Paddle();
     secondPaddle.x = this.canvas.width - 75;
-    secondPaddle.thickness = 5;
-    secondPaddle.height = 75;
+    secondPaddle.setWidth(5);
+    secondPaddle.setHeight(75);
     secondPaddle.backgroundColor = "white";
 
     this.paddles.push(secondPaddle);
 
     for (var i = 0; i < this.paddles.length; i ++) {
-        this.paddles[i].y = (this.canvas.height / 2) - (this.paddles[i].height / 2);
+        console.log(this.paddles[i].getHeight());
+        this.paddles[i].y = (this.canvas.height / 2) - (this.paddles[i].getHeight() / 2);
     }
 
     this.gameBall = new Ball();
     this.gameBall.x = this.canvas.width / 2;
     this.gameBall.y = this.canvas.height / 2;
     this.gameBall.backgroundColor = "white";
-    this.gameBall.radius = 5;
+    this.gameBall.setRadius(5);
     this.gameBall.endAngle = 0;
     this.gameBall.xVelocity = STARTING_X_VELOCITY;
     this.gameBall.yVelocity = STARTING_Y_VELOCITY;
@@ -108,8 +105,8 @@ Game.prototype.drawObjects = function() {
         this.canvasContext.fillRect(
             this.paddles[i].x,
             this.paddles[i].y,
-            this.paddles[i].thickness,
-            this.paddles[i].height
+            this.paddles[i].getWidth(),
+            this.paddles[i].getHeight()
         );
     }
 
@@ -117,7 +114,7 @@ Game.prototype.drawObjects = function() {
     this.canvasContext.arc(
         this.gameBall.x,
         this.gameBall.y,
-        this.gameBall.radius,
+        this.gameBall.getRadius(),
         this.gameBall.endAngle,
         Math.PI * 2,
         true
