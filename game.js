@@ -159,6 +159,10 @@ Game.prototype.drawPlayerWonScreen = function() {
     
 };
 
+Game.prototype.drawTitleScreen = function() {
+    
+};
+
 Game.prototype.playSounds = function(collisionInfo) {
     if (collisionInfo.lastPaddleHit != -1) {
         this.lastPaddleHit = collisionInfo.lastPaddleHit;
