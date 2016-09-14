@@ -98,8 +98,8 @@ Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
     if (this.x - this.getRadius() < paddles[0].x + paddles[0].getWidth() &&
         this.x - this.getRadius() > paddles[0].x - paddles[0].getWidth()) {
         
-        if (this.y > paddles[0].y + paddles[0].getWidth() &&
-            this.y < (paddles[0].y + paddles[0].getHeight())) {
+        if (this.y >= paddles[0].y &&
+            this.y <= (paddles[0].y + paddles[0].getHeight())) {
             
             this.xVelocity = -this.xVelocity;
             
@@ -108,11 +108,11 @@ Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
             lastPaddleHit = 1;
         }
     }
-    else if (this.x + this.getRadius() > paddles[1].x - paddles[1].getWidth() &&
-             this.x + this.getRadius() < paddles[1].x + paddles[1].getWidth()) {
+    else if (this.x + this.getRadius() >= paddles[1].x &&
+             this.x + this.getRadius() <= paddles[1].x) {
         
-        if (this.y > paddles[1].y + paddles[1].getWidth() &&
-            this.y < (paddles[1].y + paddles[1].getHeight())) {
+        if (this.y >= paddles[1].y &&
+            this.y <= (paddles[1].y + paddles[1].getHeight())) {
             
             this.xVelocity = -(this.xVelocity);
             var deltaY = this.y - (paddles[1].y + paddles[1].getHeight() / 2);
