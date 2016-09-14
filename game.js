@@ -26,6 +26,7 @@ var Game = function(canvas, settings) {
     };
     this.difficulty = this.gameSettings.difficulty[settings.difficultySetting];
     this.maxGoals = settings.maxGoals;
+    this.sounds.background.play();
 };
 
 Game.prototype.initializeCanvas = function() {

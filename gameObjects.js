@@ -63,6 +63,9 @@ GameObject.prototype.setHeight = function(newHeight) {
 
 GameObject.prototype.update;
 
+/*
+ * The X and Y coordinates coorespond to the middle of the circle.
+ */
 function Ball() {
     this.radius = 0;
     this.endAngle = 0;
@@ -150,6 +153,9 @@ Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
     };
 };
 
+/*
+ * The X and Y coordinates coorespond to the top-left part of the paddle.
+ */
 function Paddle() {
     this.thickness = 0;
     GameObject.call(this);
