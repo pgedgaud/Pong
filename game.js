@@ -65,7 +65,6 @@ Game.prototype.initializeObjects = function() {
     this.paddles.push(secondPaddle);
 
     for (var i = 0; i < this.paddles.length; i ++) {
-        console.log(this.paddles[i].getHeight());
         this.paddles[i].y = (this.canvas.height / 2) - (this.paddles[i].getHeight() / 2);
     }
 
