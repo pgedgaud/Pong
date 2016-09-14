@@ -1,6 +1,6 @@
 // constants
-const STARTING_Y_VELOCITY = 2;
-const STARTING_X_VELOCITY = 5;
+const STARTING_Y_VELOCITY = 4;
+const STARTING_X_VELOCITY = 8;
 
 function GameSettings() {
     this.maxGoals = 0;

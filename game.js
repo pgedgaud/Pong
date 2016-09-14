@@ -1,4 +1,8 @@
 var Game = function(canvas, settings) {
+    this.sound = new Howl({
+        src: ['sounds/ball_hits_wall.wav', 'sounds/paddle_one_hit', 'sounds/paddle_two_hit.wav'],
+        
+    });
     this.gameSettings = new GameSettings();
     this.canvas = canvas;
     this.canvasContext = canvas.getContext("2d");
@@ -14,9 +18,15 @@ var Game = function(canvas, settings) {
         2: 0
     };
     this.sounds = {
-        ballHitsWall: new Audio("sounds/ball_hits_wall.wav"),
-        paddleOneHit: new Audio("sounds/paddle_one_hit.wav"),
-        paddleTwoHit: new Audio("sounds/paddle_two_hit.wav")
+        ballHitsWall: new Howl({
+            src: ["sounds/ball_hits_wall.wav"]
+        }),
+        paddleOneHit: new Howl({
+            src: ["sounds/paddle_one_hit.wav"]
+        }),
+        paddleTwoHit: new Howl({
+            src: ["sounds/paddle_two_hit.wav"]
+        })
     };
     this.difficulty = this.gameSettings.difficulty[settings.difficultySetting];
     this.maxGoals = settings.maxGoals;
