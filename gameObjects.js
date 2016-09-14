@@ -1,6 +1,6 @@
 // constants
-const STARTING_Y_VELOCITY = 4;
-const STARTING_X_VELOCITY = 8;
+const STARTING_Y_VELOCITY = 2;
+const STARTING_X_VELOCITY = 5;
 
 function GameSettings() {
     this.maxGoals = 0;
@@ -95,7 +95,9 @@ Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
     var lastPaddleHit = -1;
     var isWallHit = false;
     
-    if (this.x - this.getRadius() <= paddles[0].x + paddles[0].getWidth()) {
+    if (this.x - this.getRadius() < paddles[0].x + paddles[0].getWidth() &&
+        this.x - this.getRadius() > paddles[0].x - paddles[0].getWidth()) {
+        
         if (this.y > paddles[0].y + paddles[0].getWidth() &&
             this.y < (paddles[0].y + paddles[0].getHeight())) {
             
@@ -106,8 +108,11 @@ Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
             lastPaddleHit = 1;
         }
     }
-    else if (this.x + this.getRadius() >= paddles[1].x - paddles[1].getWidth()) {
-        if (this.y > paddles[1].y &&
+    else if (this.x + this.getRadius() > paddles[1].x - paddles[1].getWidth() &&
+             this.x + this.getRadius() < paddles[1].x + paddles[1].getWidth()) {
+        
+        console.log("X coordinate met.");
+        if (this.y > paddles[1].y + paddles[1].getWidth() &&
             this.y < (paddles[1].y + paddles[1].getHeight())) {
             
             this.xVelocity = -(this.xVelocity);
