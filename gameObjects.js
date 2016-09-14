@@ -111,7 +111,6 @@ Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
     else if (this.x + this.getRadius() > paddles[1].x - paddles[1].getWidth() &&
              this.x + this.getRadius() < paddles[1].x + paddles[1].getWidth()) {
         
-        console.log("X coordinate met.");
         if (this.y > paddles[1].y + paddles[1].getWidth() &&
             this.y < (paddles[1].y + paddles[1].getHeight())) {
             
