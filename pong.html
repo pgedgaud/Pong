@@ -32,46 +32,49 @@
 </head>
 <body>
     <h1 class="text-center">Pong</h1>
-    <canvas id="canvas" width="800" height="600"></canvas>
     <div class="container">
-        <div class="row">
-            <div class="col-xs-6">
-                <label class="pull-left">Player 1 Controls: UP(W) DOWN(S)</label>
-            </div>
-            <div class="col-xs-6">
-                <label class="pull-right">Player 2 Controls: UP(&uarr;) DOWN(&darr;)</label>
+        <canvas id="canvas" width="800" height="600"></canvas>
+        <div class="row pull-right">
+            <div class="row">
+                <label>Player 1 Controls: UP(W) DOWN(S)</label>
             </div>
             <div class="row">
-                <div class="col-xs-4 col-xs-offset-4">
-                    <form>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-addon">Players</div>
-                                <select class="form-control">
-                                    <option>1</option>
-                                    <option>2</option>
-                                </select>
-                            </div>
+                <label>Player 2 Controls: UP(&uarr;) DOWN(&darr;)</label>
+            </div>
+            <div class="row">
+                <label>Sounds provided by <a href="https://soundcloud.com/darkanddarkmusic">Dark and Dark</a></label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-2 col-lg-offset-10">
+                <form>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">Players</div>
+                            <select class="form-control">
+                                <option>1</option>
+                                <option>2</option>
+                            </select>
                         </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-addon">First To</div>
-                                <input type="text" class="form-control" value="10" />
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">First To</div>
+                            <input type="text" class="form-control" value="10" />
                         </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-addon">Difficulty</div>
-                                <select class="form-control">
-                                    <option>Easy</option>
-                                    <option>Medium</option>
-                                    <option>Hard</option>
-                                </select>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">Difficulty</div>
+                            <select class="form-control">
+                                <option>Easy</option>
+                                <option>Medium</option>
+                                <option>Hard</option>
+                            </select>
                         </div>
-                        <button class="btn btn-default">Play</button>
-                    </form>
-                </div>
+                    </div>
+                    <button class="btn btn-default">Play</button>
+                </form>
             </div>
         </div>
     </div>
