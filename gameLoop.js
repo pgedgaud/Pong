@@ -6,6 +6,7 @@
 function GameLoop() {
     this.onEachIteration = null;
     this.requestId = null;
+    this.isRunning = true;
     
     if (window.webkitRequestionAnimationFrame) {
         var that = this;
@@ -53,5 +54,8 @@ GameLoop.prototype.stop = function() {
     
     if (this.requestId) {
         cancelAnimationFrame(this.requestId);
+        this.onEachIteration = null;
+        this.requestId = null;
+        this.isRunning = false;
     }
 }

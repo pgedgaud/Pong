@@ -29,17 +29,24 @@ var Game = function(canvas) {
 };
 
 Game.prototype.initializeCanvas = function() {
+    this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.canvasContext.fillStyle = "black";
     this.canvasContext.fillRect(0, 0, this.canvas.width, this.canvas.height);
     this.canvasContext.font = "40px Courier New";
 };
 
 Game.prototype.start = function(settings) {
+    this.hasPlayerWon = false;
     this.gameSettings = settings;
     this.difficulty = this.gameSettings.difficulty[settings.difficultySetting];
     this.maxGoals = settings.maxGoals;
     this.initializeCanvas();
     this.initializeObjects();
+    
+    this.score = {
+        1: 0,
+        2: 0
+    };
 }
 
 Game.prototype.onMouseMoved = function(y) {
@@ -97,12 +104,12 @@ Game.prototype.reset = function() {
 
 Game.prototype.endGame = function() {
     this.hasPlayerWon = true;
+    this.paddles = [];
 }
 
 Game.prototype.drawObjects = function() {
-    this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
     this.initializeCanvas();
+    
     for (var i = 0; i < this.paddles.length; i++) {
         this.canvasContext.fillStyle = this.paddles[i].backgroundColor;
         this.canvasContext.fillRect(
@@ -160,14 +167,16 @@ Game.prototype.processInput = function() {
 };
 
 Game.prototype.drawPlayerWonScreen = function() {
-    this.canvasContext.clearRect(0, 0, this.canvas.clientWidth, this.canvas.clientHeight);
-    var msg = "";
+    this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.canvasContext.fillStyle = "#000000";
+    this.canvasContext.fillRect(0, 0, this.canvas.width, this.canvas.height);
     
+    var msg = "";
     for (var index in this.score) {
         if (this.score.hasOwnProperty(index) &&
             this.score[index] == this.maxGoals) {
             
-            msg = "Player " + index + "has won!";
+            msg = "Player " + index + " has won!";
         }
     }
     

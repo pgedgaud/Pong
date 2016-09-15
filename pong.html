@@ -44,12 +44,18 @@
             gameSettings.difficultySetting = difficulty;
             gameSettings.players = playerCount;
             
+            gameLoop.isRunning = true;
             game.start(gameSettings);
             gameLoop.onEachIteration(function() {
+                if (!gameLoop.isRunning) {
+                    return;
+                }
+                
                 game.update();
                 if (game.hasPlayerWon) {
                     game.drawPlayerWonScreen();
                     gameLoop.stop();
+                    return;
                 }
                 game.drawObjects();
             });
