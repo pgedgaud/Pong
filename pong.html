@@ -11,27 +11,53 @@
     <script src="game.js" type="text/javascript"></script>
     <script type="text/javascript">
         var game = null;
+        var cbxPlayers = null;
+        var cbxDifficulty = null;
+        var txtPlayTo = null;
+        var btnPlay = null;
+        
         window.onload = function() {
-            var gameLoop = new GameLoop();
+            cbxPlayers = document.getElementById("cbxPlayers");
+            cbxDifficulty = document.getElementById("cbxDifficulty");
+            txtPlayTo = document.getElementById("txtPlayTo");
+            btnPlay = document.getElementById("btnPlay");
+            
+            btnPlay.addEventListener("click", startGame, false);
+            
             var canvas = document.getElementById("canvas");
             var gameSettings = new GameSettings();
             gameSettings.maxGoals = 10;
             gameSettings.difficultySetting = "medium";
-            game = new Game(canvas, gameSettings);
-            game.initializeObjects();
+            game = new Game(canvas);
+            game.initializeCanvas();
+            game.drawTitleScreen();
+        };
+        
+        function startGame() {
+            var canvas = document.getElementById("canvas");
+            var playerCount = parseInt(cbxPlayers.options[cbxPlayers.selectedIndex].value);
+            var difficulty = cbxDifficulty.options[cbxDifficulty.selectedIndex].value;
+            var playTo = parseInt(txtPlayTo.value);
+            var gameSettings = new GameSettings();
+            var gameLoop = new GameLoop();
+            gameSettings.maxGoals = playTo;
+            gameSettings.difficultySetting = difficulty;
+            gameSettings.players = playerCount;
             
+            game.start(gameSettings);
             gameLoop.onEachIteration(function() {
                 game.update();
-                if (game.isBallInGoal) {
-                    game.reset();
+                if (game.hasPlayerWon) {
+                    game.drawPlayerWonScreen();
+                    gameLoop.stop();
                 }
                 game.drawObjects();
             });
-        };
+            
+        }
     </script>
 </head>
 <body>
-    <h1 class="text-center">Pong</h1>
     <div class="container">
         <canvas id="canvas" width="800" height="600"></canvas>
         <div class="row pull-right">
@@ -51,30 +77,30 @@
                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-addon">Players</div>
-                            <select class="form-control">
-                                <option>1</option>
-                                <option>2</option>
+                            <select id="cbxPlayers" class="form-control">
+                                <option value="1" selected>1</option>
+                                <option value="2">2</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-addon">First To</div>
-                            <input type="text" class="form-control" value="10" />
+                            <input id="txtPlayTo" type="text" class="form-control" value="10" />
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-addon">Difficulty</div>
-                            <select class="form-control">
-                                <option>Easy</option>
-                                <option>Medium</option>
-                                <option>Hard</option>
+                            <select id="cbxDifficulty" class="form-control">
+                                <option value="easy" selected>Easy</option>
+                                <option value="medium">Medium</option>
+                                <option value="hard">Hard</option>
                             </select>
                         </div>
                     </div>
-                    <button class="btn btn-default">Play</button>
                 </form>
+                <button id="btnPlay" class="btn btn-default">Play</button>
             </div>
         </div>
     </div>

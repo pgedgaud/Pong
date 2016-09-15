@@ -5,37 +5,53 @@
  */
 function GameLoop() {
     this.onEachIteration = null;
+    this.requestId = null;
     
     if (window.webkitRequestionAnimationFrame) {
+        var that = this;
         this.onEachIteration = function(callback) {
             var _callback = function() {
                 callback();
-                webkitRequestAnimationFrame(_callback);
+                that.requestId = webkitRequestAnimationFrame(_callback);
             };
             _callback();
         };
     }
     else if (window.requestAnimationFrame) {
+        var that = this;
         this.onEachIteration = function(callback) {
             var _callback = function() {
                 callback();
-                requestAnimationFrame(_callback);
+                that.requestId = requestAnimationFrame(_callback);
             };
             _callback();
         };
     }
     else if (window.mozRequestAnimationFrame) {
+        var that = this;
         this.onEachIteration = function(callback) {
             var _callback = function() {
                 callback();
-                mozRequestAnimationFrame(_callback);
+                that.requestId = mozRequestAnimationFrame(_callback);
             };
             _callback();
         };
     }
     else {
+        var that = this;
         this.onEachIteration = function(callback) {
-            setInterval(callback, 1000 / 60);
+            that.requestId = setInterval(callback, 1000 / 60);
         };
+    }
+}
+
+GameLoop.prototype.stop = function() {
+    var cancelAnimationFrame = window.cancelAnimationFrame ||
+        window.mozCancelAnimationFrame ||
+        window.webkitAnimationFrame ||
+        window.cancelAnimationFrame;
+    
+    if (this.requestId) {
+        cancelAnimationFrame(this.requestId);
     }
 }

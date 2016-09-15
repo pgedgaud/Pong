@@ -1,5 +1,5 @@
-var Game = function(canvas, settings) {
-    this.gameSettings = new GameSettings();
+var Game = function(canvas) {
+    this.gameSettings = null;
     this.canvas = canvas;
     this.canvasContext = canvas.getContext("2d");
     this.input = new Input(InputTypes.keyboard);
@@ -24,9 +24,8 @@ var Game = function(canvas, settings) {
             src: ["sounds/paddle_two_hit.wav"]
         })
     };
-    this.difficulty = this.gameSettings.difficulty[settings.difficultySetting];
-    this.maxGoals = settings.maxGoals;
-    this.sounds.background.play();
+    this.difficulty = "";
+    this.maxGoals = 0;
 };
 
 Game.prototype.initializeCanvas = function() {
@@ -34,6 +33,14 @@ Game.prototype.initializeCanvas = function() {
     this.canvasContext.fillRect(0, 0, this.canvas.width, this.canvas.height);
     this.canvasContext.font = "40px Courier New";
 };
+
+Game.prototype.start = function(settings) {
+    this.gameSettings = settings;
+    this.difficulty = this.gameSettings.difficulty[settings.difficultySetting];
+    this.maxGoals = settings.maxGoals;
+    this.initializeCanvas();
+    this.initializeObjects();
+}
 
 Game.prototype.onMouseMoved = function(y) {
     if (y > this.paddles[0].getCenter() &&
@@ -89,11 +96,7 @@ Game.prototype.reset = function() {
 };
 
 Game.prototype.endGame = function() {
-    this.reset();
-    this.score = {
-        1: 0,
-        2: 0
-    };
+    this.hasPlayerWon = true;
 }
 
 Game.prototype.drawObjects = function() {
@@ -157,11 +160,28 @@ Game.prototype.processInput = function() {
 };
 
 Game.prototype.drawPlayerWonScreen = function() {
+    this.canvasContext.clearRect(0, 0, this.canvas.clientWidth, this.canvas.clientHeight);
+    var msg = "";
     
+    for (var index in this.score) {
+        if (this.score.hasOwnProperty(index) &&
+            this.score[index] == this.maxGoals) {
+            
+            msg = "Player " + index + "has won!";
+        }
+    }
+    
+    this.canvasContext.textAlign = "center";
+    this.canvasContext.fillStyle = "#FFFFFF";
+    var centerX = this.canvas.clientWidth / 2;
+    var centerY = this.canvas.clientHeight / 2;
+    this.canvasContext.fillText(msg, centerX, centerY);
 };
 
 Game.prototype.drawTitleScreen = function() {
-    
+    this.canvasContext.textAlign = "center";
+    this.canvasContext.fillStyle = "#FFFFFF";
+    this.canvasContext.fillText("PONG", this.canvas.clientWidth / 2, this.canvas.clientHeight / 2);
 };
 
 Game.prototype.playSounds = function(collisionInfo) {
@@ -195,7 +215,9 @@ Game.prototype.update = function() {
         this.score[collisionInfo.playerScored]++;
         if (this.score[collisionInfo.playerScored] == this.maxGoals) {
             this.endGame();
+            return;
         }
+        this.reset();
     }
     /* This is wrap-around code!
     if (gameBall.x > canvas.width) {
