@@ -1,5 +1,6 @@
 var Game = function(canvas) {
     this.gameSettings = null;
+    this.gameLoop = null;
     this.canvas = canvas;
     this.canvasContext = canvas.getContext("2d");
     this.input = new Input(InputTypes.keyboard);
@@ -26,7 +27,27 @@ var Game = function(canvas) {
     };
     this.difficulty = "";
     this.maxGoals = 0;
+    
+    this.initializeLoop();
+    this.initializeCanvas();
+};
+
+Game.prototype.initializeLoop = function() {
+    var self = this;
     this.gameLoop = new GameLoop();
+    this.gameLoop.onEachIteration = function() {
+        if (!self.gameLoop.isRunning) {
+            return;
+        }
+        
+        self.update();
+        if (self.hasPlayerWon) {
+            self.drawPlayerWonScreen();
+            self.gameLoop.stop();
+            return;
+        }
+        self.drawObjects();
+    };
 };
 
 Game.prototype.initializeCanvas = function() {

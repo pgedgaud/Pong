@@ -6,57 +6,20 @@
 function GameLoop() {
     this.onEachIteration = null;
     this.requestId = null;
-    this.isRunning = true;
+    this.isRunning = false;
     this.requestAnimationFrame = window.webkitRequestAnimationFrame ||
         window.mozRequestAnimationFrame ||
         window.requestAnimationFrame;
-    
-    /*
-    if (window.webkitRequestionAnimationFrame) {
-        var that = this;
-        this.onEachIteration = function(callback) {
-            var _callback = function() {
-                callback();
-                that.requestId = webkitRequestAnimationFrame(_callback);
-            };
-            _callback();
-        };
-    }
-    else if (window.requestAnimationFrame) {
-        var that = this;
-        this.onEachIteration = function(callback) {
-            var _callback = function() {
-                callback();
-                that.requestId = requestAnimationFrame(_callback);
-            };
-            _callback();
-        };
-    }
-    else if (window.mozRequestAnimationFrame) {
-        var that = this;
-        this.onEachIteration = function(callback) {
-            var _callback = function() {
-                callback();
-                that.requestId = mozRequestAnimationFrame(_callback);
-            };
-            _callback();
-        };
-    }
-    else {
-        var that = this;
-        this.onEachIteration = function(callback) {
-            that.requestId = setInterval(callback, 1000 / 60);
-        };
-    }
-    */
 }
 
 GameLoop.prototype.start = function() {
     this.isRunning = true;
     var self = this;
     var _callback = function() {
-        self.onEachIteration();
-        self.requestId = self.requestAnimationFrame.call(window, _callback);
+        if (self.onEachIteration) {
+            self.onEachIteration();
+            self.requestId = self.requestAnimationFrame.call(window, _callback);
+        }
     };
     _callback();
 };

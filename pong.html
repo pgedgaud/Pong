@@ -29,20 +29,6 @@
             gameSettings.maxGoals = 10;
             gameSettings.difficultySetting = "medium";
             game = new Game(canvas);
-            game.gameLoop.onEachIteration = function() {
-                if (!game.gameLoop.isRunning) {
-                    return;
-                }
-                
-                game.update();
-                if (game.hasPlayerWon) {
-                    game.drawPlayerWonScreen();
-                    game.gameLoop.stop();
-                    return;
-                }
-                game.drawObjects();
-            };
-            game.initializeCanvas();
             game.drawTitleScreen();
         };
         
@@ -56,54 +42,59 @@
             gameSettings.difficultySetting = difficulty;
             gameSettings.players = playerCount;
             game.start(gameSettings);
-            
         }
     </script>
 </head>
 <body>
     <div class="container">
-        <canvas id="canvas" width="800" height="600"></canvas>
-        <div class="row pull-right">
-            <div class="row">
-                <label>Player 1 Controls: UP(W) DOWN(S)</label>
-            </div>
-            <div class="row">
-                <label>Player 2 Controls: UP(&uarr;) DOWN(&darr;)</label>
-            </div>
-            <div class="row">
-                <label>Sounds provided by <a href="https://soundcloud.com/darkanddarkmusic">Dark and Dark</a></label>
-            </div>
-        </div>
         <div class="row">
-            <div class="col-lg-2 col-lg-offset-10">
-                <form>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-addon">Players</div>
-                            <select id="cbxPlayers" class="form-control">
-                                <option value="1" selected>1</option>
-                                <option value="2">2</option>
-                            </select>
-                        </div>
+            <div class="col-lg-6">
+                <canvas id="canvas" width="800" height="600"></canvas>
+            </div>
+            <div class="col-lg-6">
+                <div class="row text-right">
+                    <div class="row">
+                        <label>Player 1 Controls: UP(W) DOWN(S)</label>
                     </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-addon">First To</div>
-                            <input id="txtPlayTo" type="text" class="form-control" value="10" />
-                        </div>
+                    <div class="row">
+                        <label>Player 2 Controls: UP(&uarr;) DOWN(&darr;)</label>
                     </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-addon">Difficulty</div>
-                            <select id="cbxDifficulty" class="form-control">
-                                <option value="easy" selected>Easy</option>
-                                <option value="medium">Medium</option>
-                                <option value="hard">Hard</option>
-                            </select>
-                        </div>
+                    <div class="row">
+                        <label>Sounds provided by <a href="https://soundcloud.com/darkanddarkmusic">Dark and Dark</a></label>
                     </div>
-                </form>
-                <button id="btnPlay" class="btn btn-default">Play</button>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 pull-right">
+                        <form>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">Players</div>
+                                    <select id="cbxPlayers" class="form-control">
+                                        <option value="1" selected>1</option>
+                                        <option value="2">2</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">First To</div>
+                                    <input id="txtPlayTo" type="text" class="form-control" value="10" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">Difficulty</div>
+                                    <select id="cbxDifficulty" class="form-control">
+                                        <option value="easy" selected>Easy</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="hard">Hard</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                        <button id="btnPlay" class="btn btn-default">Play</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
