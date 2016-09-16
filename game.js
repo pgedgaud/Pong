@@ -26,6 +26,7 @@ var Game = function(canvas) {
     };
     this.difficulty = "";
     this.maxGoals = 0;
+    this.gameLoop = new GameLoop();
 };
 
 Game.prototype.initializeCanvas = function() {
@@ -42,11 +43,11 @@ Game.prototype.start = function(settings) {
     this.maxGoals = settings.maxGoals;
     this.initializeCanvas();
     this.initializeObjects();
-    
     this.score = {
         1: 0,
         2: 0
     };
+    this.gameLoop.start();
 }
 
 Game.prototype.onMouseMoved = function(y) {

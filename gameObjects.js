@@ -1,6 +1,6 @@
 // constants
 const STARTING_Y_VELOCITY = 2;
-const STARTING_X_VELOCITY = 5;
+const STARTING_X_VELOCITY = 10;
 
 function GameSettings() {
     this.maxGoals = 0;
@@ -112,8 +112,7 @@ Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
         }
     }
     else if (this.x + this.getRadius() >= paddles[1].x &&
-             this.x + this.getRadius() <= paddles[1].x) {
-        
+             this.x + this.getRadius() <= paddles[1].x + paddles[1].getWidth()) {
         if (this.y >= paddles[1].y &&
             this.y <= (paddles[1].y + paddles[1].getHeight())) {
             
