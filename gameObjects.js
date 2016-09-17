@@ -1,6 +1,7 @@
 // constants
 const STARTING_Y_VELOCITY = 2;
 const STARTING_X_VELOCITY = 10;
+const PADDLE_SPEED = 6;
 
 function GameSettings() {
     this.maxGoals = 0;
@@ -9,15 +10,18 @@ function GameSettings() {
     this.difficulty = {
         easy: {
             label: "Easy",
-            aiPaddleSpeed: 4
+            aiPaddleSpeed: PADDLE_SPEED,
+            aiAcceleration: 2.25
         },
         medium: {
             label: "Medium",
-            aiPaddleSpeed: 6.5
+            aiPaddleSpeed: 6.5,
+            aiAcceleration: 2.5
         },
         hard: {
             label: "Hard",
-            aiPaddleSpeed: 10
+            aiPaddleSpeed: 10,
+            aiAcceleration: 2.75
         }
     }
 }

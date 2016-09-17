@@ -57,6 +57,7 @@ Game.prototype.initializeCanvas = function() {
     this.canvasContext.font = "40px Courier New";
 };
 
+//FIXME(Logan) Game doesn't start over after this is run again.
 Game.prototype.start = function(settings) {
     this.hasPlayerWon = false;
     this.gameSettings = settings;
@@ -169,22 +170,22 @@ Game.prototype.processInput = function() {
     if (this.gameSettings.players == 2) {
         if (this.input.keysPressed[KeyCodes.up] &&
             this.paddles[1].getTop() > this.canvas.clientTop) {
-            this.paddles[1].moveUp(6);
+            this.paddles[1].moveUp(PADDLE_SPEED);
         }
         if (this.input.keysPressed[KeyCodes.down] &&
             this.paddles[1].getBottom() < this.canvas.clientHeight) {
-            this.paddles[1].moveDown(6);
+            this.paddles[1].moveDown(PADDLE_SPEED);
         }
     }
     
     if (this.input.keysPressed[KeyCodes.w] &&
         this.paddles[0].getTop() > this.canvas.clientTop) {
         
-        this.paddles[0].moveUp(6);
+        this.paddles[0].moveUp(PADDLE_SPEED);
     }
     if (this.input.keysPressed[KeyCodes.s] &&
         this.paddles[0].getBottom() < this.canvas.clientHeight) {
-        this.paddles[0].moveDown(6);
+        this.paddles[0].moveDown(PADDLE_SPEED);
     }
 };
 
@@ -265,17 +266,23 @@ Game.prototype.calculateAi = function(gameBall) {
     var paddleTop = this.paddles[1].getTop();
     var paddleBottom = this.paddles[1].getBottom();
     var paddleCenter = Math.abs(this.paddles[1].getCenter());
+    var acceleration = 1.0;
+    
+    if (distanceFromCenter > aiPaddleNoise &&
+        distanceFromCenter > this.paddles[1].getHeight() / 2) {
+        acceleration = this.difficulty.aiAcceleration;
+    }
     
     if (paddleCenter > gameBall.y &&
         paddleTop > this.canvas.clientTop &&
         distanceFromCenter > aiPaddleNoise) {
         
-        this.paddles[1].y -= this.difficulty.aiPaddleSpeed;
+        this.paddles[1].y -= this.difficulty.aiPaddleSpeed * acceleration;
     }
     else if (paddleCenter < gameBall.y &&
              paddleBottom < this.canvas.clientHeight &&
              distanceFromCenter > aiPaddleNoise){
         
-        this.paddles[1].y += this.difficulty.aiPaddleSpeed;
+        this.paddles[1].y += this.difficulty.aiPaddleSpeed * acceleration;
     }
 };
