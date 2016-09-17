@@ -215,6 +215,7 @@ Game.prototype.drawTitleScreen = function() {
     this.canvasContext.fillText("PONG", this.canvas.clientWidth / 2, this.canvas.clientHeight / 2);
 };
 
+//TODO(Logan): Get sound files from Alfonzo
 Game.prototype.playSounds = function(collisionInfo) {
     if (collisionInfo.lastPaddleHit != -1) {
         this.lastPaddleHit = collisionInfo.lastPaddleHit;
@@ -257,6 +258,7 @@ Game.prototype.update = function() {
     */
 };
 
+//TODO(Logan): Enhance AI to accelerate paddle speed based on Y distance from ball.
 Game.prototype.calculateAi = function(gameBall) {
     var distanceFromCenter = Math.abs(this.paddles[1].getCenter() - gameBall.y);
     var aiPaddleNoise = 8;

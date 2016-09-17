@@ -92,6 +92,7 @@ Ball.prototype.getRadius = function() {
     return this.radius * this.getScale();
 };
 
+//NOTE(Logan): Collisions may not be all that great.
 Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
     var isBallInGoal = false;
     var playerScored = -1;
