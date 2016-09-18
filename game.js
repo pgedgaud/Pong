@@ -116,6 +116,7 @@ Game.prototype.initializeObjects = function() {
     this.gameBall.yVelocity = STARTING_Y_VELOCITY;
 };
 
+//TODO(Logan) -> Refactor the startingXVelocity
 Game.prototype.reset = function() {
     this.startingXVelocity = -this.startingXVelocity;
     this.gameBall.x = this.canvas.width / 2;
