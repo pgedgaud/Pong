@@ -1,4 +1,5 @@
 var Game = function(canvas) {
+    this.startingXVelocity = STARTING_X_VELOCITY;
     this.lastFrameRenderUtc = null;
     this.gameSettings = null;
     this.gameLoop = null;
@@ -57,7 +58,6 @@ Game.prototype.initializeCanvas = function() {
     this.canvasContext.font = "40px Courier New";
 };
 
-//FIXME(Logan) Game doesn't start over after this is run again.
 Game.prototype.start = function(settings) {
     this.hasPlayerWon = false;
     this.gameSettings = settings;
@@ -116,11 +116,11 @@ Game.prototype.initializeObjects = function() {
     this.gameBall.yVelocity = STARTING_Y_VELOCITY;
 };
 
-//FIXME(Logan) Fix starting X direction after goal is scored.
 Game.prototype.reset = function() {
+    this.startingXVelocity = -this.startingXVelocity;
     this.gameBall.x = this.canvas.width / 2;
     this.gameBall.y = this.canvas.height / 2;
-    this.gameBall.xVelocity = -this.gameBall.xVelocity;
+    this.gameBall.xVelocity = -this.startingXVelocity;
     this.gameBall.yVelocity = STARTING_Y_VELOCITY;
     this.isBallInGoal = false;
     this.lastPaddleHit = -1;
