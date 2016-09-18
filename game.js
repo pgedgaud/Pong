@@ -43,8 +43,7 @@ Game.prototype.initializeLoop = function() {
         
         self.update(time);
         if (self.hasPlayerWon) {
-            self.drawPlayerWonScreen();
-            self.gameLoop.stop();
+            self.endGame();
             return;
         }
         self.drawObjects();
@@ -128,8 +127,11 @@ Game.prototype.reset = function() {
 };
 
 Game.prototype.endGame = function() {
+    this.gameLoop.stop();
     this.hasPlayerWon = true;
     this.paddles = [];
+    this.lastFrameRenderUtc = null;
+    this.drawPlayerWonScreen();
 }
 
 Game.prototype.drawObjects = function() {

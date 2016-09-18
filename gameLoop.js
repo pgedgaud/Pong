@@ -32,7 +32,6 @@ GameLoop.prototype.stop = function() {
     
     if (this.requestId) {
         cancelAnimationFrame(this.requestId);
-        this.onEachIteration = null;
         this.requestId = null;
         this.isRunning = false;
     }
