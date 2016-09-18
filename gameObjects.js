@@ -172,12 +172,12 @@ Paddle.prototype.getCenter = function() {
     return this.y + (this.height / 2);
 };
 
-Paddle.prototype.moveUp = function(pixels) {
-    this.y -= pixels;
+Paddle.prototype.moveUp = function(pixels, deltaTime) {
+    this.y -= pixels * deltaTime;
 };
 
-Paddle.prototype.moveDown = function(pixels) {
-    this.y += pixels;
+Paddle.prototype.moveDown = function(pixels, deltaTime) {
+    this.y += pixels * deltaTime;
 };
 
 Paddle.prototype.moveTo = function(y) {

@@ -1,4 +1,5 @@
 var Game = function(canvas) {
+    this.lastFrameRenderUtc = null;
     this.gameSettings = null;
     this.gameLoop = null;
     this.canvas = canvas;
@@ -166,26 +167,27 @@ Game.prototype.drawScoreInformation = function() {
     this.canvasContext.fillText(this.score[2], playerTwoScoreX, 50);
 };
 
-Game.prototype.processInput = function() {
+Game.prototype.processInput = function(currentUpdateUtc) {
+    var deltaTime = currentUpdateUtc - this.lastFrameRenderUtc;
     if (this.gameSettings.players == 2) {
         if (this.input.keysPressed[KeyCodes.up] &&
             this.paddles[1].getTop() > this.canvas.clientTop) {
-            this.paddles[1].moveUp(PADDLE_SPEED);
+            this.paddles[1].moveUp(PADDLE_SPEED, deltaTime);
         }
         if (this.input.keysPressed[KeyCodes.down] &&
             this.paddles[1].getBottom() < this.canvas.clientHeight) {
-            this.paddles[1].moveDown(PADDLE_SPEED);
+            this.paddles[1].moveDown(PADDLE_SPEED, deltaTime);
         }
     }
     
     if (this.input.keysPressed[KeyCodes.w] &&
         this.paddles[0].getTop() > this.canvas.clientTop) {
         
-        this.paddles[0].moveUp(PADDLE_SPEED);
+        this.paddles[0].moveUp(PADDLE_SPEED, deltaTime);
     }
     if (this.input.keysPressed[KeyCodes.s] &&
         this.paddles[0].getBottom() < this.canvas.clientHeight) {
-        this.paddles[0].moveDown(PADDLE_SPEED);
+        this.paddles[0].moveDown(PADDLE_SPEED, deltaTime);
     }
 };
 
@@ -234,7 +236,8 @@ Game.prototype.playSounds = function(collisionInfo) {
 };
 
 Game.prototype.update = function() {
-    this.processInput();
+    var currentUpdateUtc = new Date();
+    this.processInput(currentUpdateUtc);
     this.gameBall.updatePosition();
     
     if (this.gameSettings.players == 1) {
@@ -252,6 +255,7 @@ Game.prototype.update = function() {
         }
         this.reset();
     }
+    this.lastFrameRenderUtc = currentUpdateUtc;
     /* This is wrap-around code!
     if (gameBall.x > canvas.width) {
         gameBall.x -= gameBall.x;
