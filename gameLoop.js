@@ -15,9 +15,9 @@ function GameLoop() {
 GameLoop.prototype.start = function() {
     this.isRunning = true;
     var self = this;
-    var _callback = function() {
+    var _callback = function(time) {
         if (self.onEachIteration) {
-            self.onEachIteration();
+            self.onEachIteration(time);
             self.requestId = self.requestAnimationFrame.call(window, _callback);
         }
     };

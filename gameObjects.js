@@ -1,7 +1,7 @@
 // constants
 const STARTING_Y_VELOCITY = 2;
 const STARTING_X_VELOCITY = 10;
-const PADDLE_SPEED = 6;
+const PADDLE_SPEED = 250;
 
 function GameSettings() {
     this.maxGoals = 0;
@@ -15,12 +15,12 @@ function GameSettings() {
         },
         medium: {
             label: "Medium",
-            aiPaddleSpeed: 6.5,
+            aiPaddleSpeed: PADDLE_SPEED * 1.25,
             aiAcceleration: 2.5
         },
         hard: {
             label: "Hard",
-            aiPaddleSpeed: 10,
+            aiPaddleSpeed: PADDLE_SPEED * 1.75,
             aiAcceleration: 2.75
         }
     }
@@ -173,11 +173,11 @@ Paddle.prototype.getCenter = function() {
 };
 
 Paddle.prototype.moveUp = function(pixels, deltaTime) {
-    this.y -= pixels * deltaTime;
+    this.y -= pixels * (deltaTime / 1000);
 };
 
 Paddle.prototype.moveDown = function(pixels, deltaTime) {
-    this.y += pixels * deltaTime;
+    this.y += pixels * (deltaTime / 1000);
 };
 
 Paddle.prototype.moveTo = function(y) {

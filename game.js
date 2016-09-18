@@ -36,12 +36,12 @@ var Game = function(canvas) {
 Game.prototype.initializeLoop = function() {
     var self = this;
     this.gameLoop = new GameLoop();
-    this.gameLoop.onEachIteration = function() {
+    this.gameLoop.onEachIteration = function(time) {
         if (!self.gameLoop.isRunning) {
             return;
         }
         
-        self.update();
+        self.update(time);
         if (self.hasPlayerWon) {
             self.drawPlayerWonScreen();
             self.gameLoop.stop();
@@ -117,6 +117,7 @@ Game.prototype.initializeObjects = function() {
     this.gameBall.yVelocity = STARTING_Y_VELOCITY;
 };
 
+//FIXME(Logan) Fix starting X direction after goal is scored.
 Game.prototype.reset = function() {
     this.gameBall.x = this.canvas.width / 2;
     this.gameBall.y = this.canvas.height / 2;
@@ -167,8 +168,7 @@ Game.prototype.drawScoreInformation = function() {
     this.canvasContext.fillText(this.score[2], playerTwoScoreX, 50);
 };
 
-Game.prototype.processInput = function(currentUpdateUtc) {
-    var deltaTime = currentUpdateUtc - this.lastFrameRenderUtc;
+Game.prototype.processInput = function(deltaTime) {
     if (this.gameSettings.players == 2) {
         if (this.input.keysPressed[KeyCodes.up] &&
             this.paddles[1].getTop() > this.canvas.clientTop) {
@@ -235,13 +235,18 @@ Game.prototype.playSounds = function(collisionInfo) {
     }
 };
 
-Game.prototype.update = function() {
-    var currentUpdateUtc = new Date();
-    this.processInput(currentUpdateUtc);
+Game.prototype.update = function(time) {
+    var currentTime = time || new Date().getTime();
+    if (this.lastFrameRenderUtc == null) {
+        this.lastFrameRenderUtc = currentTime;
+    }
+    
+    var deltaTime = currentTime - this.lastFrameRenderUtc;
+    this.processInput(deltaTime);
     this.gameBall.updatePosition();
     
     if (this.gameSettings.players == 1) {
-        this.calculateAi(this.gameBall);
+        this.calculateAi(this.gameBall, deltaTime);
     }
     var collisionInfo = this.gameBall.checkCollisionsWith(this.paddles, this.canvas);
     
@@ -255,7 +260,7 @@ Game.prototype.update = function() {
         }
         this.reset();
     }
-    this.lastFrameRenderUtc = currentUpdateUtc;
+    this.lastFrameRenderUtc = time;
     /* This is wrap-around code!
     if (gameBall.x > canvas.width) {
         gameBall.x -= gameBall.x;
@@ -263,10 +268,9 @@ Game.prototype.update = function() {
     */
 };
 
-//TODO(Logan): Enhance AI to accelerate paddle speed based on Y distance from ball.
-Game.prototype.calculateAi = function(gameBall) {
+Game.prototype.calculateAi = function(gameBall, deltaTime) {
     var distanceFromCenter = Math.abs(this.paddles[1].getCenter() - gameBall.y);
-    var aiPaddleNoise = 8;
+    var aiPaddleNoise = 10;
     var paddleTop = this.paddles[1].getTop();
     var paddleBottom = this.paddles[1].getBottom();
     var paddleCenter = Math.abs(this.paddles[1].getCenter());
@@ -281,12 +285,12 @@ Game.prototype.calculateAi = function(gameBall) {
         paddleTop > this.canvas.clientTop &&
         distanceFromCenter > aiPaddleNoise) {
         
-        this.paddles[1].y -= this.difficulty.aiPaddleSpeed * acceleration;
+        this.paddles[1].moveUp(this.difficulty.aiPaddleSpeed * acceleration, deltaTime);
     }
     else if (paddleCenter < gameBall.y &&
              paddleBottom < this.canvas.clientHeight &&
              distanceFromCenter > aiPaddleNoise){
         
-        this.paddles[1].y += this.difficulty.aiPaddleSpeed * acceleration;
+        this.paddles[1].moveDown(this.difficulty.aiPaddleSpeed * acceleration, deltaTime);
     }
 };
