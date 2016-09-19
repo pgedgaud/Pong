@@ -129,6 +129,7 @@ Game.prototype.initializeObjects = function() {
 };
 
 //FIXME (Logan) => The first reset moves the ball in the same direction.
+//FIXME (Logan) => Multiple play throws cause ball to move insanely fast.
 Game.prototype.reset = function() {
     this.matchStartXVelocity = -this.matchStartXVelocity;
     this.gameBall.x = this.canvas.width / 2;
