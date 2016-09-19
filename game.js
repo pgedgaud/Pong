@@ -1,6 +1,7 @@
 var Game = function(canvas) {
-    this.startingXVelocity = STARTING_X_VELOCITY;
+    this.matchStartXVelocity = STARTING_X_VELOCITY;
     this.lastFrameRenderUtc = null;
+    this.sounds = null;
     this.gameSettings = null;
     this.gameLoop = null;
     this.canvas = canvas;
@@ -16,6 +17,17 @@ var Game = function(canvas) {
         1: 0,
         2: 0
     };
+    this.difficulty = "";
+    this.maxGoals = 0;
+    
+    this.initializeSound();
+    this.initializeLoop();
+    this.initializeCanvas();
+    
+    this.sounds.background.play();
+};
+
+Game.prototype.initializeSound = function() {
     this.sounds = {
         ballHitsWall: new Howl({
             src: ["sounds/ball_hits_wall.wav"]
@@ -25,14 +37,14 @@ var Game = function(canvas) {
         }),
         paddleTwoHit: new Howl({
             src: ["sounds/paddle_two_hit.wav"]
+        }),
+        background: new Howl({
+            src: ["sounds/background.mp3"],
+            loop: true,
+            volume: 0.30
         })
     };
-    this.difficulty = "";
-    this.maxGoals = 0;
-    
-    this.initializeLoop();
-    this.initializeCanvas();
-};
+}
 
 Game.prototype.initializeLoop = function() {
     var self = this;
@@ -116,12 +128,12 @@ Game.prototype.initializeObjects = function() {
     this.gameBall.yVelocity = STARTING_Y_VELOCITY;
 };
 
-//TODO(Logan) -> Refactor the startingXVelocity
+//FIXME (Logan) => The first reset moves the ball in the same direction.
 Game.prototype.reset = function() {
-    this.startingXVelocity = -this.startingXVelocity;
+    this.matchStartXVelocity = -this.matchStartXVelocity;
     this.gameBall.x = this.canvas.width / 2;
     this.gameBall.y = this.canvas.height / 2;
-    this.gameBall.xVelocity = -this.startingXVelocity;
+    this.gameBall.xVelocity = -this.matchStartXVelocity;
     this.gameBall.yVelocity = STARTING_Y_VELOCITY;
     this.isBallInGoal = false;
     this.lastPaddleHit = -1;
