@@ -128,7 +128,6 @@ Game.prototype.initializeObjects = function() {
     this.gameBall.yVelocity = STARTING_Y_VELOCITY;
 };
 
-//FIXME (Logan) => Multiple play throws cause ball to move insanely fast.
 Game.prototype.reset = function() {
     this.matchStartXVelocity = -this.matchStartXVelocity;
     this.gameBall.x = this.canvas.width / 2;
@@ -251,7 +250,6 @@ Game.prototype.playSounds = function(collisionInfo) {
     }
 };
 
-//TODO(Logan) => Update ball movement based on time
 Game.prototype.update = function(time) {
     var currentTime = time || new Date().getTime();
     if (this.lastFrameRenderUtc == null) {
@@ -260,7 +258,7 @@ Game.prototype.update = function(time) {
     
     var deltaTime = currentTime - this.lastFrameRenderUtc;
     this.processInput(deltaTime);
-    this.gameBall.updatePosition();
+    this.gameBall.updatePosition(deltaTime);
     
     if (this.gameSettings.players == 1) {
         this.calculateAi(this.gameBall, deltaTime);

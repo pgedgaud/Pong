@@ -1,6 +1,6 @@
 // constants
-const STARTING_Y_VELOCITY = 2;
-const STARTING_X_VELOCITY = 10;
+const STARTING_Y_VELOCITY = 300;
+const STARTING_X_VELOCITY = 500;
 const PADDLE_SPEED = 250;
 
 function GameSettings() {
@@ -81,9 +81,9 @@ function Ball() {
 Ball.prototype = GameObject.prototype;
 Ball.prototype.constructor = GameObject;
 
-Ball.prototype.updatePosition = function() {
-    this.x += this.xVelocity;
-    this.y += this.yVelocity;
+Ball.prototype.updatePosition = function(deltaTime) {
+    this.x += this.xVelocity * (deltaTime / 1000);
+    this.y += this.yVelocity * (deltaTime / 1000);
 };
 
 Ball.prototype.setRadius = function(newRadius) {
@@ -96,7 +96,8 @@ Ball.prototype.getRadius = function() {
     return this.radius * this.getScale();
 };
 
-//NOTE(Logan): Collisions may not be all that great.
+//TODO(Logan) => Collisions may not be all that great.
+//FIXME(Logan) => Collision fails after first play.
 Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
     var isBallInGoal = false;
     var playerScored = -1;
