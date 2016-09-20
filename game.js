@@ -146,6 +146,7 @@ Game.prototype.endGame = function() {
     this.paddles = [];
     this.lastFrameRenderUtc = null;
     this.drawPlayerWonScreen();
+    this.gameBall = null;
 }
 
 Game.prototype.drawObjects = function() {
@@ -251,6 +252,7 @@ Game.prototype.playSounds = function(collisionInfo) {
     }
 };
 
+//TODO(Logan) => Update ball movement based on time
 Game.prototype.update = function(time) {
     var currentTime = time || new Date().getTime();
     if (this.lastFrameRenderUtc == null) {
