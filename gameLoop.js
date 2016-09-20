@@ -7,7 +7,7 @@ function GameLoop() {
     this.onEachIteration = null;
     this.requestId = null;
     this.isRunning = false;
-    this.requestAnimationFrame = window.webkitRequestAnimationFrame ||
+    window.requestAnimationFrame = window.webkitRequestAnimationFrame ||
         window.mozRequestAnimationFrame ||
         window.requestAnimationFrame;
 }
@@ -18,7 +18,7 @@ GameLoop.prototype.start = function() {
     var _callback = function(time) {
         if (self.onEachIteration) {
             self.onEachIteration(time);
-            self.requestId = self.requestAnimationFrame.call(window, _callback);
+            self.requestId = window.requestAnimationFrame(_callback);
         }
     };
     _callback();

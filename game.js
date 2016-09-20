@@ -128,13 +128,12 @@ Game.prototype.initializeObjects = function() {
     this.gameBall.yVelocity = STARTING_Y_VELOCITY;
 };
 
-//FIXME (Logan) => The first reset moves the ball in the same direction.
 //FIXME (Logan) => Multiple play throws cause ball to move insanely fast.
 Game.prototype.reset = function() {
     this.matchStartXVelocity = -this.matchStartXVelocity;
     this.gameBall.x = this.canvas.width / 2;
     this.gameBall.y = this.canvas.height / 2;
-    this.gameBall.xVelocity = -this.matchStartXVelocity;
+    this.gameBall.xVelocity = this.matchStartXVelocity;
     this.gameBall.yVelocity = STARTING_Y_VELOCITY;
     this.isBallInGoal = false;
     this.lastPaddleHit = -1;
