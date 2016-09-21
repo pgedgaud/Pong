@@ -233,7 +233,6 @@ Game.prototype.drawTitleScreen = function() {
     this.canvasContext.fillText("PONG", this.canvas.clientWidth / 2, this.canvas.clientHeight / 2);
 };
 
-//TODO(Logan): Get sound files from Alfonzo
 Game.prototype.playSounds = function(collisionInfo) {
     if (collisionInfo.lastPaddleHit != -1) {
         this.lastPaddleHit = collisionInfo.lastPaddleHit;

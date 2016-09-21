@@ -1,6 +1,6 @@
-const STARTING_Y_VELOCITY = 250;
-const STARTING_X_VELOCITY = 400;
-const PADDLE_SPEED = 250;
+const STARTING_Y_VELOCITY = 150; // 150
+const STARTING_X_VELOCITY = 400; // 400
+const PADDLE_SPEED = 300;
 
 function GameSettings() {
     this.maxGoals = 0;
@@ -95,7 +95,30 @@ Ball.prototype.getRadius = function() {
     return this.radius * this.getScale();
 };
 
-//TODO(Logan) => Add collision detection at rectangle edges.
+Ball.prototype.isCollidingWith = function(paddle) {
+    var distanceX = Math.abs(this.x - paddle.x - paddle.getWidth() / 2);
+    var distanceY = Math.abs(this.y - paddle.y - paddle.getHeight() / 2);
+    
+    if (distanceX > paddle.getWidth() / 2 + this.getRadius()) {
+        return false;
+    }
+    if (distanceY > paddle.getHeight() / 2 + this.getRadius()) {
+        return false;
+    }
+    
+    if (distanceX <= paddle.getWidth() / 2) {
+        return true;
+    }
+    if (distanceY <= paddle.getHeight() / 2) {
+        return true;
+    }
+    
+    var dx = distanceX - paddle.getWidth() / 2;
+    var dy = distanceY - paddle.getHeight() / 2;
+    return ((dx * dx) + (dy * dy)) <= (this.getRadius() * this.getRadius());
+};
+
+//FIXME(Logan) => Ball doesn't know what to do when it is sandwiched between wall and paddle.
 Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
     var isBallInGoal = false;
     var playerScored = -1;
@@ -104,15 +127,11 @@ Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
     var outerX = (this.xVelocity >= 0) ? this.x + this.getRadius() : this.x - this.getRadius();
     
     for (var i = 0; i < paddles.length; i++) {
-        var distBetweenCenterX = Math.abs(outerX - paddles[i].x - paddles[i].getWidth() / 2);
-        var distBetweenCenterY = Math.abs(this.y - paddles[i].y - paddles[i].getHeight() / 2);
         
-        if (distBetweenCenterX <= paddles[i].getWidth() / 2 &&
-            distBetweenCenterY <= paddles[i].getHeight() / 2) {
-            
+        if (this.isCollidingWith(paddles[i])) {
             this.xVelocity = -(this.xVelocity);
             var deltaY = this.y - (paddles[i].y + paddles[i].getHeight() / 2);
-            this.yVelocity = deltaY * 5.35;
+            this.yVelocity = deltaY * 10.35;
             
             switch (i) {
                 case 0:
