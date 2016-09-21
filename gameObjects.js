@@ -1,6 +1,5 @@
-// constants
-const STARTING_Y_VELOCITY = 300;
-const STARTING_X_VELOCITY = 500;
+const STARTING_Y_VELOCITY = 250;
+const STARTING_X_VELOCITY = 400;
 const PADDLE_SPEED = 250;
 
 function GameSettings() {
@@ -103,29 +102,26 @@ Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
     var playerScored = -1;
     var lastPaddleHit = -1;
     var isWallHit = false;
+    var outerX = (this.xVelocity >= 0) ? this.x + this.getRadius() : this.x - this.getRadius();
     
-    if (this.x - this.getRadius() < paddles[0].x + paddles[0].getWidth() &&
-        this.x - this.getRadius() > paddles[0].x - paddles[0].getWidth()) {
+    for (var i = 0; i < paddles.length; i++) {
+        var distBetweenCenterX = Math.abs(outerX - paddles[i].x - paddles[i].getWidth() / 2);
+        var distBetweenCenterY = Math.abs(this.y - paddles[i].y - paddles[i].getHeight() / 2);
         
-        if (this.y >= paddles[0].y &&
-            this.y <= (paddles[0].y + paddles[0].getHeight())) {
-            
-            this.xVelocity = -this.xVelocity;
-            
-            var deltaY = this.y - (paddles[0].y + paddles[0].getHeight() / 2);
-            this.yVelocity = deltaY * 0.35;
-            lastPaddleHit = 1;
-        }
-    }
-    else if (this.x + this.getRadius() >= paddles[1].x &&
-             this.x + this.getRadius() <= paddles[1].x + paddles[1].getWidth()) {
-        if (this.y >= paddles[1].y &&
-            this.y <= (paddles[1].y + paddles[1].getHeight())) {
+        if (distBetweenCenterX <= paddles[i].getWidth() / 2 &&
+            distBetweenCenterY <= paddles[i].getHeight() / 2) {
             
             this.xVelocity = -(this.xVelocity);
-            var deltaY = this.y - (paddles[1].y + paddles[1].getHeight() / 2);
-            this.yVelocity = deltaY * 0.35;
-            lastPaddleHit = 2;
+            var deltaY = this.y - (paddles[i].y + paddles[i].getHeight() / 2);
+            this.yVelocity = deltaY * 5.35;
+            
+            switch (i) {
+                case 0:
+                    lastPaddleHit = 1;
+                    break;
+                case 1:
+                    lastPaddleHit = 2;
+            }
         }
     }
 
