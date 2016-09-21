@@ -95,8 +95,7 @@ Ball.prototype.getRadius = function() {
     return this.radius * this.getScale();
 };
 
-//TODO(Logan) => Collisions may not be all that great.
-//FIXME(Logan) => Collision fails after first play.
+//TODO(Logan) => Add collision detection at rectangle edges.
 Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
     var isBallInGoal = false;
     var playerScored = -1;
