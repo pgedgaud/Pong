@@ -135,10 +135,9 @@ Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
                 
                 this.xVelocity = -(this.xVelocity);
             }
-            // this.xVelocity = -(this.xVelocity);
             var deltaY = this.y - (paddles[i].y + paddles[i].getHeight() / 2);
             this.yVelocity = deltaY * 10.35;
-            
+            console.log(this.yVelocity);
             switch (i) {
                 case 0:
                     lastPaddleHit = 1;

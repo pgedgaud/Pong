@@ -230,7 +230,7 @@ Game.prototype.drawPlayerWonScreen = function() {
 Game.prototype.drawTitleScreen = function() {
     this.canvasContext.textAlign = "center";
     this.canvasContext.fillStyle = "#FFFFFF";
-    this.canvasContext.fillText("PONG", this.canvas.clientWidth / 2, this.canvas.clientHeight / 2);
+    this.canvasContext.fillText("RETRO TENNIS", this.canvas.clientWidth / 2, this.canvas.clientHeight / 2);
 };
 
 Game.prototype.playSounds = function(collisionInfo) {
@@ -257,11 +257,11 @@ Game.prototype.update = function(time) {
     
     var deltaTime = currentTime - this.lastFrameRenderUtc;
     this.processInput(deltaTime);
-    this.gameBall.updatePosition(deltaTime);
     
     if (this.gameSettings.players == 1) {
         this.calculateAi(this.gameBall, deltaTime);
     }
+    this.gameBall.updatePosition(deltaTime);
     var collisionInfo = this.gameBall.checkCollisionsWith(this.paddles, this.canvas);
     
     this.playSounds(collisionInfo);
