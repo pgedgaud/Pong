@@ -119,15 +119,16 @@ Ball.prototype.isCollidingWith = function(paddle) {
 };
 
 //FIXME(Logan) => Collision is broken after first play.
+//NOTE(Logan) => This works if I do a game = new Game() in pong.html when Play is clicked.
 Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
     var isBallInGoal = false;
     var playerScored = -1;
     var lastPaddleHit = -1;
     var isWallHit = false;
+    var isColliding = false;
     
     for (var i = 0; i < paddles.length; i++) {
         if (this.isCollidingWith(paddles[i])) {
-            var currentXVelocity = this.xVelocity;
             var middleX = paddles[i].x + paddles[i].getWidth() / 2;
             var middleY = paddles[i].y + paddles[i].getHeight() / 2;
             if ((i == 0 && this.x > middleX) ||
@@ -135,9 +136,10 @@ Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
                 
                 this.xVelocity = -(this.xVelocity);
             }
+            
             var deltaY = this.y - (paddles[i].y + paddles[i].getHeight() / 2);
             this.yVelocity = deltaY * 10.35;
-            console.log(this.yVelocity);
+            
             switch (i) {
                 case 0:
                     lastPaddleHit = 1;

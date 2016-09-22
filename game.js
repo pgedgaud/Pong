@@ -72,15 +72,17 @@ Game.prototype.initializeCanvas = function() {
 
 Game.prototype.start = function(settings) {
     this.hasPlayerWon = false;
+    this.lastPaddleHit = -1;
     this.gameSettings = settings;
     this.difficulty = this.gameSettings.difficulty[settings.difficultySetting];
     this.maxGoals = settings.maxGoals;
-    this.initializeCanvas();
-    this.initializeObjects();
     this.score = {
         1: 0,
         2: 0
     };
+    
+    this.initializeCanvas();
+    this.initializeObjects();
     this.gameLoop.start();
 }
 
@@ -91,6 +93,7 @@ Game.prototype.endGame = function() {
     this.lastFrameRenderUtc = null;
     this.drawPlayerWonScreen();
     this.gameBall = null;
+    this.isBallInGoal = false;
 }
 
 Game.prototype.onMouseMoved = function(y) {
@@ -261,8 +264,9 @@ Game.prototype.update = function(time) {
     if (this.gameSettings.players == 1) {
         this.calculateAi(this.gameBall, deltaTime);
     }
-    this.gameBall.updatePosition(deltaTime);
+    
     var collisionInfo = this.gameBall.checkCollisionsWith(this.paddles, this.canvas);
+    this.gameBall.updatePosition(deltaTime);
     
     this.playSounds(collisionInfo);
     this.isBallInGoal = collisionInfo.isBallInGoal;
