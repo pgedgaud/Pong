@@ -84,6 +84,15 @@ Game.prototype.start = function(settings) {
     this.gameLoop.start();
 }
 
+Game.prototype.endGame = function() {
+    this.gameLoop.stop();
+    this.hasPlayerWon = true;
+    this.paddles = [];
+    this.lastFrameRenderUtc = null;
+    this.drawPlayerWonScreen();
+    this.gameBall = null;
+}
+
 Game.prototype.onMouseMoved = function(y) {
     if (y > this.paddles[0].getCenter() &&
         this.paddles[0].getBottom() <= this.canvas.clientHeight) {
@@ -137,15 +146,6 @@ Game.prototype.reset = function() {
     this.isBallInGoal = false;
     this.lastPaddleHit = -1;
 };
-
-Game.prototype.endGame = function() {
-    this.gameLoop.stop();
-    this.hasPlayerWon = true;
-    this.paddles = [];
-    this.lastFrameRenderUtc = null;
-    this.drawPlayerWonScreen();
-    this.gameBall = null;
-}
 
 Game.prototype.drawObjects = function() {
     this.initializeCanvas();
