@@ -127,7 +127,15 @@ Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
     
     for (var i = 0; i < paddles.length; i++) {
         if (this.isCollidingWith(paddles[i])) {
-            this.xVelocity = -(this.xVelocity);
+            var currentXVelocity = this.xVelocity;
+            var middleX = paddles[i].x + paddles[i].getWidth() / 2;
+            var middleY = paddles[i].y + paddles[i].getHeight() / 2;
+            if ((i == 0 && this.x > middleX) ||
+                (i == 1 && this.x < middleX)) {
+                
+                this.xVelocity = -(this.xVelocity);
+            }
+            // this.xVelocity = -(this.xVelocity);
             var deltaY = this.y - (paddles[i].y + paddles[i].getHeight() / 2);
             this.yVelocity = deltaY * 10.35;
             
