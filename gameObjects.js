@@ -118,7 +118,7 @@ Ball.prototype.isCollidingWith = function(paddle) {
     return ((dx * dx) + (dy * dy)) <= (this.getRadius() * this.getRadius());
 };
 
-//FIXME(Logan) => Ball doesn't know what to do when it is sandwiched between wall and paddle.
+//FIXME(Logan) => Collision is broken after first play.
 Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
     var isBallInGoal = false;
     var playerScored = -1;
