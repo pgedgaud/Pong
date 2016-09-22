@@ -124,10 +124,8 @@ Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
     var playerScored = -1;
     var lastPaddleHit = -1;
     var isWallHit = false;
-    var outerX = (this.xVelocity >= 0) ? this.x + this.getRadius() : this.x - this.getRadius();
     
     for (var i = 0; i < paddles.length; i++) {
-        
         if (this.isCollidingWith(paddles[i])) {
             this.xVelocity = -(this.xVelocity);
             var deltaY = this.y - (paddles[i].y + paddles[i].getHeight() / 2);
@@ -142,23 +140,18 @@ Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
             }
         }
     }
-
+    
     if (this.y + this.getRadius() > canvas.height ||
         this.y - this.getRadius() < 0) {
         this.yVelocity = -this.yVelocity;
         isWallHit = true;
     }
     
-    if (this.x < canvas.clientLeft ||
-        this.x > canvas.clientWidth) {
-        
-        isBallInGoal = true;
-    }
-    
     if (this.x < canvas.clientLeft) {
         isBallInGoal = true;
         playerScored = 2;
     }
+    
     if (this.x > canvas.clientWidth) {
         isBallInGoal = true;
         playerScored = 1;
