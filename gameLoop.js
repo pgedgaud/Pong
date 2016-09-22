@@ -7,6 +7,7 @@ function GameLoop() {
     this.onEachIteration = null;
     this.requestId = null;
     this.isRunning = false;
+    this.callback = null;
     window.requestAnimationFrame = window.webkitRequestAnimationFrame ||
         window.mozRequestAnimationFrame ||
         window.requestAnimationFrame;
@@ -15,13 +16,13 @@ function GameLoop() {
 GameLoop.prototype.start = function() {
     this.isRunning = true;
     var self = this;
-    var _callback = function(time) {
+    this.callback = function(time) {
         if (self.onEachIteration) {
             self.onEachIteration(time);
-            self.requestId = window.requestAnimationFrame(_callback);
+            self.requestId = window.requestAnimationFrame(self.callback);
         }
     };
-    _callback();
+    this.callback();
 };
 
 GameLoop.prototype.stop = function() {
@@ -34,5 +35,6 @@ GameLoop.prototype.stop = function() {
         cancelAnimationFrame(this.requestId);
         this.requestId = null;
         this.isRunning = false;
+        this.callback = null;
     }
 }

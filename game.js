@@ -7,7 +7,6 @@ var Game = function(canvas) {
     this.canvas = canvas;
     this.canvasContext = canvas.getContext("2d");
     this.input = new Input(InputTypes.keyboard);
-    this.framesPerSecond = 60;
     this.paddles = [];
     this.gameBall = null;
     this.isBallInGoal = false;
