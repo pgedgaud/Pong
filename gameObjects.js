@@ -9,13 +9,13 @@ function GameSettings() {
     this.difficulty = {
         easy: {
             label: "Easy",
-            aiPaddleSpeed: PADDLE_SPEED,
-            aiAcceleration: 2.25
+            aiPaddleSpeed: PADDLE_SPEED * 0.75,
+            aiAcceleration: 1.75
         },
         medium: {
             label: "Medium",
-            aiPaddleSpeed: PADDLE_SPEED * 1.25,
-            aiAcceleration: 2.5
+            aiPaddleSpeed: PADDLE_SPEED,
+            aiAcceleration: 2.25
         },
         hard: {
             label: "Hard",
@@ -118,8 +118,6 @@ Ball.prototype.isCollidingWith = function(paddle) {
     return ((dx * dx) + (dy * dy)) <= (this.getRadius() * this.getRadius());
 };
 
-//FIXME(Logan) => Collision is broken after first play.
-//NOTE(Logan) => This works if I do a game = new Game() in pong.html when Play is clicked.
 Ball.prototype.checkCollisionsWith = function(paddles, canvas) {
     var isBallInGoal = false;
     var playerScored = -1;

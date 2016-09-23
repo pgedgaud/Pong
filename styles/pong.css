@@ -1,9 +1,9 @@
 body {
-    background-color: #eeeeee;
-    margin: 10px;
+    background-color: #EEEEEE;
 }
 
 canvas {
     cursor: none;
+    display: block;
     box-shadow: 2.5px 2.5px 15px #000000;
 }

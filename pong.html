@@ -15,20 +15,27 @@
         var cbxDifficulty = null;
         var txtPlayTo = null;
         var btnPlay = null;
+        var btnStop = null;
+        var btnPause = null;
         
         window.onload = function() {
-            cbxPlayers = document.getElementById("cbxPlayers");
-            cbxDifficulty = document.getElementById("cbxDifficulty");
-            txtPlayTo = document.getElementById("txtPlayTo");
-            btnPlay = document.getElementById("btnPlay");
-            
-            btnPlay.addEventListener("click", startGame, false);
-            
             var canvas = document.getElementById("canvas");
             var gameSettings = new GameSettings();
             gameSettings.maxGoals = 10;
             gameSettings.difficultySetting = "medium";
             game = new Game(canvas);
+            
+            cbxPlayers = document.getElementById("cbxPlayers");
+            cbxDifficulty = document.getElementById("cbxDifficulty");
+            txtPlayTo = document.getElementById("txtPlayTo");
+            btnPlay = document.getElementById("btnPlay");
+            btnStop = document.getElementById("btnStop");
+            btnPause = document.getElementById("btnPause");
+            
+            btnPlay.addEventListener("click", startGame, false);
+            btnStop.addEventListener("click", stopGame, false);
+            btnPause.addEventListener("click", pauseGame, false);
+            
             game.drawTitleScreen();
         };
         
@@ -41,20 +48,46 @@
             gameSettings.maxGoals = playTo;
             gameSettings.difficultySetting = difficulty;
             gameSettings.players = playerCount;
-            // game = new Game(canvas);
             game.start(gameSettings);
+            
+            btnPause.disabled = false;
+            btnStop.disabled = false;
+            btnPlay.disabled = true;
         }
+        
+        function stopGame() {
+            game.endGame();
+            game.drawTitleScreen();
+            
+            btnPlay.disabled = false;
+            btnPause.disabled = true;
+            btnStop.disabled = true;
+        }
+        
+        function pauseGame() {
+            
+        }
+        
     </script>
 </head>
 <body>
-    <div class="container">
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Retro Tennis</a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Developed in 2016</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container" id="mainContainer">
         <div class="row">
             <div class="col-lg-6">
                 <canvas id="canvas" width="800" height="600"></canvas>
             </div>
-            <!--NOTE(Logan): Text alignment is still a bit off-->
-            <div class="col-lg-6">
-                <div class="row text-right">
+            <div class="col-lg-6 text-right">
+                <div class="row">
                     <div class="row">
                         <label>Player 1 Controls: UP(W) DOWN(S)</label>
                     </div>
@@ -95,12 +128,11 @@
                             </div>
                         </form>
                         <button id="btnPlay" class="btn btn-default">Play</button>
+                        <button id="btnPause" class="btn btn-warning" disabled>Pause</button>
+                        <button id="btnStop" class="btn btn-danger" disabled>Stop</button>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="footer">
-            <label>Developed in 2016</label>
         </div>
     </div>
 </body>

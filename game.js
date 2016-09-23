@@ -85,6 +85,11 @@ Game.prototype.start = function(settings) {
     this.gameLoop.start();
 }
 
+//TODO(Logan) => Implement pausing feature
+Game.prototype.pauseGame = function() {
+    
+}
+
 Game.prototype.endGame = function() {
     this.gameLoop.stop();
     this.hasPlayerWon = true;
