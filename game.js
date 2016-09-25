@@ -1,5 +1,6 @@
 var Game = function(canvas) {
     this.matchStartXVelocity = STARTING_X_VELOCITY;
+    this.isPaused = false;
     this.lastFrameRenderUtc = null;
     this.sounds = null;
     this.gameSettings = null;
@@ -49,16 +50,24 @@ Game.prototype.initializeLoop = function() {
     var self = this;
     this.gameLoop = new GameLoop();
     this.gameLoop.onEachIteration = function(time) {
+        var currentTime = time || new Date().getTime();
+        if (self.lastFrameRenderUtc == null) {
+            self.lastFrameRenderUtc = currentTime;
+        }
+        
         if (!self.gameLoop.isRunning) {
+            self.lastFrameRenderUtc = currentTime;
             return;
         }
         
-        self.update(time);
+        var deltaTime = currentTime - self.lastFrameRenderUtc;
+        self.update(deltaTime);
         if (self.hasPlayerWon) {
             self.endGame();
             return;
         }
         self.drawObjects();
+        self.lastFrameRenderUtc = currentTime;
     };
 };
 
@@ -83,12 +92,16 @@ Game.prototype.start = function(settings) {
     this.initializeCanvas();
     this.initializeObjects();
     this.gameLoop.start();
-}
+};
 
 //TODO(Logan) => Implement pausing feature
 Game.prototype.pauseGame = function() {
-    
-}
+    this.gameLoop.isRunning = false;
+};
+
+Game.prototype.resumeGame = function() {
+    this.gameLoop.isRunning = true;
+};
 
 Game.prototype.endGame = function() {
     this.gameLoop.stop();
@@ -98,7 +111,7 @@ Game.prototype.endGame = function() {
     this.drawPlayerWonScreen();
     this.gameBall = null;
     this.isBallInGoal = false;
-}
+};
 
 Game.prototype.onMouseMoved = function(y) {
     if (y > this.paddles[0].getCenter() &&
@@ -256,13 +269,7 @@ Game.prototype.playSounds = function(collisionInfo) {
     }
 };
 
-Game.prototype.update = function(time) {
-    var currentTime = time || new Date().getTime();
-    if (this.lastFrameRenderUtc == null) {
-        this.lastFrameRenderUtc = currentTime;
-    }
-    
-    var deltaTime = currentTime - this.lastFrameRenderUtc;
+Game.prototype.update = function(deltaTime) {
     this.processInput(deltaTime);
     
     if (this.gameSettings.players == 1) {
@@ -282,7 +289,6 @@ Game.prototype.update = function(time) {
         }
         this.reset();
     }
-    this.lastFrameRenderUtc = time;
     /* This is wrap-around code!
     if (gameBall.x > canvas.width) {
         gameBall.x -= gameBall.x;

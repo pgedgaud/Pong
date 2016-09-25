@@ -17,6 +17,7 @@
         var btnPlay = null;
         var btnStop = null;
         var btnPause = null;
+        var btnResume = null;
         
         window.onload = function() {
             var canvas = document.getElementById("canvas");
@@ -31,10 +32,14 @@
             btnPlay = document.getElementById("btnPlay");
             btnStop = document.getElementById("btnStop");
             btnPause = document.getElementById("btnPause");
+            btnResume = document.getElementById("btnResume");
             
             btnPlay.addEventListener("click", startGame, false);
             btnStop.addEventListener("click", stopGame, false);
             btnPause.addEventListener("click", pauseGame, false);
+            btnResume.addEventListener("click", resumeGame, false);
+            
+            btnResume.style.display = "none";
             
             game.drawTitleScreen();
         };
@@ -53,6 +58,7 @@
             btnPause.disabled = false;
             btnStop.disabled = false;
             btnPlay.disabled = true;
+            btnResume.disabled = true;
         }
         
         function stopGame() {
@@ -61,11 +67,21 @@
             
             btnPlay.disabled = false;
             btnPause.disabled = true;
+            btnResume.disabled = true;
             btnStop.disabled = true;
         }
         
         function pauseGame() {
-            
+            game.pauseGame();
+            btnPause.style.display = "none";
+            btnResume.style.display = "";
+            btnResume.disabled = false;
+        }
+        
+        function resumeGame() {
+            game.resumeGame();
+            btnResume.style.display = "none";
+            btnPause.style.display = "";
         }
         
     </script>
@@ -129,6 +145,7 @@
                         </form>
                         <button id="btnPlay" class="btn btn-default">Play</button>
                         <button id="btnPause" class="btn btn-warning" disabled>Pause</button>
+                        <button id="btnResume" class="btn btn-success" disabled>Resume</button>
                         <button id="btnStop" class="btn btn-danger" disabled>Stop</button>
                     </div>
                 </div>
