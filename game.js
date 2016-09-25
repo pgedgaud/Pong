@@ -1,7 +1,7 @@
 var Game = function(canvas) {
+    this.onGameEnd = null;
     this.matchStartXVelocity = STARTING_X_VELOCITY;
-    this.isPaused = false;
-    this.lastFrameRenderUtc = null;
+    this.lastFrameRenderTime = null;
     this.sounds = null;
     this.gameSettings = null;
     this.gameLoop = null;
@@ -25,6 +25,11 @@ var Game = function(canvas) {
     this.initializeCanvas();
     
     this.sounds.background.play();
+    
+    this.isFunction = function(func) {
+        var getType = {};
+        return func && getType.toString.call(func) === "[object Function]";
+    };
 };
 
 Game.prototype.initializeSound = function() {
@@ -51,23 +56,23 @@ Game.prototype.initializeLoop = function() {
     this.gameLoop = new GameLoop();
     this.gameLoop.onEachIteration = function(time) {
         var currentTime = time || new Date().getTime();
-        if (self.lastFrameRenderUtc == null) {
-            self.lastFrameRenderUtc = currentTime;
+        if (self.lastFrameRenderTime == null) {
+            self.lastFrameRenderTime = currentTime;
         }
         
         if (!self.gameLoop.isRunning) {
-            self.lastFrameRenderUtc = currentTime;
+            self.lastFrameRenderTime = currentTime;
             return;
         }
         
-        var deltaTime = currentTime - self.lastFrameRenderUtc;
+        var deltaTime = currentTime - self.lastFrameRenderTime;
         self.update(deltaTime);
         if (self.hasPlayerWon) {
             self.endGame();
             return;
         }
         self.drawObjects();
-        self.lastFrameRenderUtc = currentTime;
+        self.lastFrameRenderTime = currentTime;
     };
 };
 
@@ -94,7 +99,6 @@ Game.prototype.start = function(settings) {
     this.gameLoop.start();
 };
 
-//TODO(Logan) => Implement pausing feature
 Game.prototype.pauseGame = function() {
     this.gameLoop.isRunning = false;
 };
@@ -107,10 +111,13 @@ Game.prototype.endGame = function() {
     this.gameLoop.stop();
     this.hasPlayerWon = true;
     this.paddles = [];
-    this.lastFrameRenderUtc = null;
+    this.lastFrameRenderTime = null;
     this.drawPlayerWonScreen();
     this.gameBall = null;
     this.isBallInGoal = false;
+    if (this.isFunction && this.isFunction(this.onGameEnd)) {
+        this.onGameEnd();
+    }
 };
 
 Game.prototype.onMouseMoved = function(y) {

@@ -42,6 +42,12 @@
             btnResume.style.display = "none";
             
             game.drawTitleScreen();
+            game.onGameEnd = function() {
+                btnPlay.disabled = false;
+                btnPause.disabled = true;
+                btnResume.disabled = true;
+                btnStop.disabled = true;
+            };
         };
         
         function startGame() {
