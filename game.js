@@ -83,6 +83,18 @@ Game.prototype.initializeCanvas = function() {
     this.canvasContext.font = "40px Courier New";
 };
 
+Game.prototype.drawNet = function() {
+    for (var i = 0; i < this.canvas.clientHeight; i += 40) {
+        this.canvasContext.fillStyle = "white";
+        this.canvasContext.fillRect(
+            this.canvas.clientWidth / 2 - 1,
+            i,
+            2,
+            20
+        );
+    }
+};
+
 Game.prototype.start = function(settings) {
     this.hasPlayerWon = false;
     this.lastPaddleHit = -1;
@@ -138,7 +150,7 @@ Game.prototype.initializeObjects = function() {
     firstPaddle.x = 75;
     firstPaddle.setWidth(5);
     firstPaddle.setHeight(75);
-    firstPaddle.backgroundColor = "white";
+    firstPaddle.backgroundColor = "#90EDFF";
 
     this.paddles.push(firstPaddle);
 
@@ -146,7 +158,7 @@ Game.prototype.initializeObjects = function() {
     secondPaddle.x = this.canvas.width - 75;
     secondPaddle.setWidth(5);
     secondPaddle.setHeight(75);
-    secondPaddle.backgroundColor = "white";
+    secondPaddle.backgroundColor = "#90EDFF";
 
     this.paddles.push(secondPaddle);
 
@@ -157,7 +169,7 @@ Game.prototype.initializeObjects = function() {
     this.gameBall = new Ball();
     this.gameBall.x = this.canvas.width / 2;
     this.gameBall.y = this.canvas.height / 2;
-    this.gameBall.backgroundColor = "white";
+    this.gameBall.backgroundColor = "#E500E1";
     this.gameBall.setRadius(5);
     this.gameBall.endAngle = 0;
     this.gameBall.xVelocity = STARTING_X_VELOCITY;
@@ -176,6 +188,9 @@ Game.prototype.reset = function() {
 
 Game.prototype.drawObjects = function() {
     this.initializeCanvas();
+    this.drawNet();
+    this.canvasContext.fillStyle = "#FFFFFF";
+    this.drawScoreInformation();
     
     for (var i = 0; i < this.paddles.length; i++) {
         this.canvasContext.fillStyle = this.paddles[i].backgroundColor;
@@ -187,6 +202,7 @@ Game.prototype.drawObjects = function() {
         );
     }
 
+    this.canvasContext.fillStyle = this.gameBall.backgroundColor;
     this.canvasContext.beginPath();
     this.canvasContext.arc(
         this.gameBall.x,
@@ -199,7 +215,6 @@ Game.prototype.drawObjects = function() {
     this.canvasContext.closePath();
     this.canvasContext.fill();
     
-    this.drawScoreInformation();
 };
 
 Game.prototype.drawScoreInformation = function() {
@@ -256,7 +271,7 @@ Game.prototype.drawPlayerWonScreen = function() {
 
 Game.prototype.drawTitleScreen = function() {
     this.canvasContext.textAlign = "center";
-    this.canvasContext.fillStyle = "#FFFFFF";
+    this.canvasContext.fillStyle = "#9090FF";
     this.canvasContext.fillText("RETRO TENNIS", this.canvas.clientWidth / 2, this.canvas.clientHeight / 2);
 };
 
