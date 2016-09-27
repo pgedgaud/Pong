@@ -30,12 +30,32 @@ window.onload = function() {
     btnResume.style.display = "none";
 
     game.drawTitleScreen();
-    game.onGameEnd = function() {
+    game.onGameEnded = function() {
         btnPlay.disabled = false;
         btnPause.disabled = true;
+        btnPause.style.display = "";
         btnResume.disabled = true;
+        btnResume.style.display = "none";
         btnStop.disabled = true;
+        disableForm(false);
     };
+    game.onGameStarted = function() {
+        btnPause.disabled = false;
+        btnStop.disabled = false;
+        btnPlay.disabled = true;
+        btnResume.disabled = true;
+
+        disableForm(true);
+    }
+    game.onGamePaused = function() {
+        btnPause.style.display = "none";
+        btnResume.style.display = "";
+        btnResume.disabled = false;
+    }
+    game.onGameResumed = function() {
+        btnResume.style.display = "none";
+        btnPause.style.display = "";
+    }
 };
 
 function startGame() {
@@ -48,32 +68,23 @@ function startGame() {
     gameSettings.difficultySetting = difficulty;
     gameSettings.players = playerCount;
     game.start(gameSettings);
-
-    btnPause.disabled = false;
-    btnStop.disabled = false;
-    btnPlay.disabled = true;
-    btnResume.disabled = true;
 }
 
 function stopGame() {
     game.endGame();
     game.drawTitleScreen();
-
-    btnPlay.disabled = false;
-    btnPause.disabled = true;
-    btnResume.disabled = true;
-    btnStop.disabled = true;
 }
 
 function pauseGame() {
     game.pauseGame();
-    btnPause.style.display = "none";
-    btnResume.style.display = "";
-    btnResume.disabled = false;
 }
 
 function resumeGame() {
     game.resumeGame();
-    btnResume.style.display = "none";
-    btnPause.style.display = "";
+}
+
+function disableForm(isDisabled) {
+    txtPlayTo.disabled = isDisabled;
+    cbxPlayers.disabled = isDisabled;
+    cbxDifficulty.disabled = isDisabled;
 }

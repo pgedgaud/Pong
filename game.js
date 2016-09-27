@@ -1,5 +1,8 @@
 var Game = function(canvas) {
-    this.onGameEnd = null;
+    this.onGameEnded = null;
+    this.onGameStarted = null;
+    this.onGamePaused = null;
+    this.onGameResumed = null;
     this.matchStartXVelocity = STARTING_X_VELOCITY;
     this.lastFrameRenderTime = null;
     this.sounds = null;
@@ -109,14 +112,25 @@ Game.prototype.start = function(settings) {
     this.initializeCanvas();
     this.initializeObjects();
     this.gameLoop.start();
+    
+    if (this.isFunction && this.isFunction(this.onGameStarted)) {
+        this.onGameStarted();
+    }
 };
 
 Game.prototype.pauseGame = function() {
     this.gameLoop.isRunning = false;
+    if (this.isFunction && this.isFunction(this.onGamePaused)) {
+        this.onGamePaused();
+    }
 };
 
 Game.prototype.resumeGame = function() {
     this.gameLoop.isRunning = true;
+    
+    if (this.isFunction && this.isFunction(this.onGameResumed)) {
+        this.onGameResumed();
+    }
 };
 
 Game.prototype.endGame = function() {
@@ -127,8 +141,8 @@ Game.prototype.endGame = function() {
     this.drawPlayerWonScreen();
     this.gameBall = null;
     this.isBallInGoal = false;
-    if (this.isFunction && this.isFunction(this.onGameEnd)) {
-        this.onGameEnd();
+    if (this.isFunction && this.isFunction(this.onGameEnded)) {
+        this.onGameEnded();
     }
 };
 
