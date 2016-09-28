@@ -10,6 +10,7 @@
     },
     "icons": {
         "16": "images/retro_tennis.png",
+        "32": "images/retro_tennis.png",
         "128": "images/retro_tennis.png"
     }
 }

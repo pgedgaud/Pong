@@ -58,6 +58,14 @@ window.onload = function() {
     }
 };
 
+window.onblur = function() {
+    pauseGame();
+};
+
+window.onfocus = function() {
+    resumeGame();
+};
+
 function startGame() {
     var canvas = document.getElementById("canvas");
     var playerCount = parseInt(cbxPlayers.options[cbxPlayers.selectedIndex].value);
@@ -76,11 +84,15 @@ function stopGame() {
 }
 
 function pauseGame() {
-    game.pauseGame();
+    if (!game.isPaused && game.gameLoop.isRunning) {
+        game.pauseGame();
+    }
 }
 
 function resumeGame() {
-    game.resumeGame();
+    if (game.isPaused) {
+        game.resumeGame();
+    }
 }
 
 function disableForm(isDisabled) {

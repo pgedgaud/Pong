@@ -1,4 +1,5 @@
 var Game = function(canvas) {
+    this.isPaused = false;
     this.onGameEnded = null;
     this.onGameStarted = null;
     this.onGamePaused = null;
@@ -120,6 +121,7 @@ Game.prototype.start = function(settings) {
 
 Game.prototype.pauseGame = function() {
     this.gameLoop.isRunning = false;
+    this.isPaused = true;
     if (this.isFunction && this.isFunction(this.onGamePaused)) {
         this.onGamePaused();
     }
@@ -127,7 +129,7 @@ Game.prototype.pauseGame = function() {
 
 Game.prototype.resumeGame = function() {
     this.gameLoop.isRunning = true;
-    
+    this.isPaused = false;
     if (this.isFunction && this.isFunction(this.onGameResumed)) {
         this.onGameResumed();
     }
@@ -164,7 +166,7 @@ Game.prototype.initializeObjects = function() {
     firstPaddle.x = 75;
     firstPaddle.setWidth(5);
     firstPaddle.setHeight(75);
-    firstPaddle.backgroundColor = "#90EDFF";
+    firstPaddle.backgroundColor = "#FF8484";
 
     this.paddles.push(firstPaddle);
 
@@ -172,7 +174,7 @@ Game.prototype.initializeObjects = function() {
     secondPaddle.x = this.canvas.width - 75;
     secondPaddle.setWidth(5);
     secondPaddle.setHeight(75);
-    secondPaddle.backgroundColor = "#90EDFF";
+    secondPaddle.backgroundColor = "#FF8484";
 
     this.paddles.push(secondPaddle);
 
@@ -183,7 +185,7 @@ Game.prototype.initializeObjects = function() {
     this.gameBall = new Ball();
     this.gameBall.x = this.canvas.width / 2;
     this.gameBall.y = this.canvas.height / 2;
-    this.gameBall.backgroundColor = "#E500E1";
+    this.gameBall.backgroundColor = "#84EBFF";
     this.gameBall.setRadius(5);
     this.gameBall.endAngle = 0;
     this.gameBall.xVelocity = STARTING_X_VELOCITY;
