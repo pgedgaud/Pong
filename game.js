@@ -360,3 +360,8 @@ Game.prototype.calculateAi = function(gameBall, deltaTime) {
         this.paddles[1].moveDown(this.difficulty.aiPaddleSpeed * acceleration, deltaTime);
     }
 };
+
+Game.prototype.muteMusic = function() {
+    this.sounds.background.pause();
+    
+}

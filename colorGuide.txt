@@ -1,0 +1,5 @@
+222222 dark grey background
+ffff00 yellow
+ff0000 red
+1188CC blue
+00BB22 green

@@ -6,6 +6,7 @@ var btnPlay = null;
 var btnStop = null;
 var btnPause = null;
 var btnResume = null;
+var btnMute = null;
 
 window.onload = function() {
     var canvas = document.getElementById("canvas");
@@ -13,6 +14,7 @@ window.onload = function() {
     gameSettings.maxGoals = 10;
     gameSettings.difficultySetting = "medium";
     game = new Game(canvas);
+    document.getElementById("help").style.display = "none";
 
     cbxPlayers = document.getElementById("cbxPlayers");
     cbxDifficulty = document.getElementById("cbxDifficulty");
@@ -21,13 +23,20 @@ window.onload = function() {
     btnStop = document.getElementById("btnStop");
     btnPause = document.getElementById("btnPause");
     btnResume = document.getElementById("btnResume");
+    btnMute = document.getElementById("btnMute");
+    btnHelp = document.getElementById("btnHelp");
+    btnCloseHelp = document.getElementById("btnCloseHelp");
 
     btnPlay.addEventListener("click", startGame, false);
     btnStop.addEventListener("click", stopGame, false);
     btnPause.addEventListener("click", pauseGame, false);
     btnResume.addEventListener("click", resumeGame, false);
+    btnMute.addEventListener("click", muteMusic, false);
+    btnHelp.addEventListener("click", displayHelp, false);
+    btnCloseHelp.addEventListener("click", hideHelp, false);
 
     btnResume.style.display = "none";
+    btnPause.style.display = "none";
 
     game.drawTitleScreen();
     game.onGameEnded = function() {
@@ -67,6 +76,8 @@ window.onfocus = function() {
 };
 
 function startGame() {
+    btnPlay.style.display = "none";
+    btnPause.style.display = "";
     var canvas = document.getElementById("canvas");
     var playerCount = parseInt(cbxPlayers.options[cbxPlayers.selectedIndex].value);
     var difficulty = cbxDifficulty.options[cbxDifficulty.selectedIndex].value;
@@ -85,12 +96,16 @@ function stopGame() {
 
 function pauseGame() {
     if (!game.isPaused && game.gameLoop.isRunning) {
+        document.getElementById("btnPause").style.display = "none";
+        document.getElementById("btnResume").style.display = "";
         game.pauseGame();
     }
 }
 
 function resumeGame() {
     if (game.isPaused) {
+        document.getElementById("btnPause").style.display = "";
+        document.getElementById("btnResume").style.display = "none";
         game.resumeGame();
     }
 }
@@ -99,4 +114,16 @@ function disableForm(isDisabled) {
     txtPlayTo.disabled = isDisabled;
     cbxPlayers.disabled = isDisabled;
     cbxDifficulty.disabled = isDisabled;
+}
+
+function muteMusic() {
+    game.muteMusic();
+}
+
+function displayHelp() {
+    document.getElementById("help").style.display = "";
+}
+
+function hideHelp() {
+    document.getElementById("help").style.display = "none";
 }
